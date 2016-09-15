@@ -26,10 +26,10 @@ v${OPENBLAS_VERSION}.tar.gz:
 	wget http://github.com/xianyi/OpenBLAS/archive/v${OPENBLAS_VERSION}.tar.gz
 
 clean-openblas:
-	rm -r sources/OpenBLAS
+	rm -rf sources/OpenBLAS
 
 clean-openblas-tar:
-	rm v${OPENBLAS_VERSION}.tar.gz
+	rm -f v${OPENBLAS_VERSION}.tar.gz
 
 cleanall-openblas: clean-openblas clean-openblas-tar
 
@@ -48,10 +48,10 @@ boost_${BOOST_VERSION}.tar.bz2:
 	wget https://sourceforge.net/projects/boost/files/boost/`echo "${BOOST_VERSION}" | sed -e 's/_/./g'`/boost_${BOOST_VERSION}.tar.bz2/download -O boost_${BOOST_VERSION}.tar.bz2
 
 clean-boost:
-	rm -r sources/Boost
+	rm -fr sources/Boost
 
 clean-boost-tar:
-	rm boost_${BOOST_VERSION}.tar.bz2
+	rm -f boost_${BOOST_VERSION}.tar.bz2
 
 cleanall-boost: clean-boost clean-boost-tar
 
@@ -70,10 +70,10 @@ gsl-${GSL_VERSION}.tar.gz:
 	wget http://fr.mirror.babylon.network/gnu/gsl/gsl-${GSL_VERSION}.tar.gz
 
 clean-gsl:
-	rm -r sources/Gsl
+	rm -rf sources/Gsl
 
 clean-gsl-tar:
-	rm gsl-${GSL_VERSION}.tar.gz
+	rm -f gsl-${GSL_VERSION}.tar.gz
 
 cleanall-gsl: clean-gsl clean-gsl-tar
 
@@ -92,10 +92,10 @@ lapack-${LAPACK_VERSION}.tgz:
 	wget http://www.netlib.org/lapack/lapack-${LAPACK_VERSION}.tgz
 
 clean-lapack:
-	rm -r sources/Gsl
+	rm -rf sources/Gsl
 
 clean-lapack-tar:
-	rm lapack-${LAPACK_VERSION}.tgz
+	rm -f lapack-${LAPACK_VERSION}.tgz
 
 cleanall-lapack: clean-lapack clean-lapack-tar
 
