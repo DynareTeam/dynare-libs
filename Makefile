@@ -5,11 +5,11 @@ include versions.mk
 	clean-gsl clean-gsl-tar cleanall-gsl \
 	all
 
-all: sources/OpenBLAS sources/Boost sources/Gsl sources/Lapack
+all: sources/OpenBLAS sources/Boost sources/Gsl sources/Lapack sources/matIO
 
-clean: clean-openblas clean-boost clean-gsl clean-lapack
+clean: clean-openblas clean-boost clean-gsl clean-lapack clean-matio
 
-cleanall: cleanall-openblas cleanall-boost cleanall-gsl cleanall-lapack
+cleanall: cleanall-openblas cleanall-boost cleanall-gsl cleanall-lapack cleanall-matio
 
 #
 # OpenBLAS library
@@ -99,3 +99,24 @@ clean-lapack-tar:
 
 cleanall-lapack: clean-lapack clean-lapack-tar
 
+#
+# matIO
+#
+
+sources/matIO: matio-${MATIO_VERSION}.tar.gz
+	rm -rf sources/matIO
+	tar -zxf matio-${MATIO_VERSION}.tar.gz
+	mkdir -p sources/matIO
+	mv matio-${MATIO_VERSION}/* sources/matIO
+	rm -r matio-${MATIO_VERSION}
+
+matio-${MATIO_VERSION}.tar.gz:
+	wget https://sourceforge.net/projects/matio/files/matio/${MATIO_VERSION}/matio-${MATIO_VERSION}.tar.gz/download -O matio-${MATIO_VERSION}.tar.gz
+
+clean-matio:
+	rm -r sources/matIO
+
+clean-matio-tar:
+	rm matio-${MATIO_VERSION}.tar.gz
+
+cleanall-matio: clean-matio clean-matio-tar
