@@ -66,7 +66,7 @@ sources/Gsl: gsl-${GSL_VERSION}.tar.gz
 	mv gsl-${GSL_VERSION}/* sources/Gsl
 	rm -r gsl-${GSL_VERSION}
 
-gsl-${GSL_VERSION}.tgz:
+gsl-${GSL_VERSION}.tar.gz:
 	wget http://fr.mirror.babylon.network/gnu/gsl/gsl-${GSL_VERSION}.tar.gz
 
 clean-gsl:
