@@ -2,17 +2,25 @@ include versions.mk
 
 .PHONY: clean-openblas clean-openblas-tar cleanall-openblas \
 	clean-boost clean-boost-tar cleanall-boost \
+	clean-gsl clean-gsl-tar cleanall-gsl \
 	all
 
-all: sources/OpenBLAS sources/Boost
+all: sources/OpenBLAS sources/Boost sources/Gsl
+
+clean: clean-openblas clean-boost clean-gsl
+
+cleanall: cleanall-openblas cleanall-boost cleanall-gsl
 
 #
 # OpenBLAS library
 #
 
 sources/OpenBLAS: v${OPENBLAS_VERSION}.tar.gz
-	tar -zxvf v${OPENBLAS_VERSION}.tar.gz
-	mv OpenBLAS-${OPENBLAS_VERSION} sources/OpenBLAS
+	rm -rf sources/OpenBLAS
+	tar -zxf v${OPENBLAS_VERSION}.tar.gz
+	mkdir sources/OpenBLAS
+	mv OpenBLAS-${OPENBLAS_VERSION}/* sources/OpenBLAS
+	rm -r OpenBLAS-${OPENBLAS_VERSION}
 
 v${OPENBLAS_VERSION}.tar.gz:
 	wget http://github.com/xianyi/OpenBLAS/archive/v${OPENBLAS_VERSION}.tar.gz
@@ -30,9 +38,11 @@ cleanall-openblas: clean-openblas clean-openblas-tar
 #
 
 sources/Boost: boost_${BOOST_VERSION}.tar.bz2
+	rm -rf sources/Boost
 	tar xjf boost_${BOOST_VERSION}.tar.bz2
-	mv boost_${BOOST_VERSION} sources
-	mv sources/boost_${BOOST_VERSION} sources/Boost
+	mkdir sources/Boost
+	mv boost_${BOOST_VERSION}/* sources/Boost
+	rm -r boost_${BOOST_VERSION}
 
 boost_${BOOST_VERSION}.tar.bz2:
 	wget https://sourceforge.net/projects/boost/files/boost/`echo "${BOOST_VERSION}" | sed -e 's/_/./g'`/boost_${BOOST_VERSION}.tar.bz2/download -O boost_${BOOST_VERSION}.tar.bz2
@@ -44,3 +54,25 @@ clean-boost-tar:
 	rm boost_${BOOST_VERSION}.tar.bz2
 
 cleanall-boost: clean-boost clean-boost-tar
+
+#
+# Gsl
+#
+
+sources/Gsl: gsl-${GSL_VERSION}.tar.gz
+	rm -rf sources/Gsl
+	tar -zxf gsl-${GSL_VERSION}.tar.gz
+	mkdir -p sources/Gsl
+	mv gsl-${GSL_VERSION}/* sources/Gsl
+	rm -r gsl-${GSL_VERSION}
+
+gsl-${GSL_VERSION}.tar.gz:
+	wget http://fr.mirror.babylon.network/gnu/gsl/gsl-${GSL_VERSION}.tar.gz
+
+clean-gsl:
+	rm -r sources/Gsl
+
+clean-gsl-tar:
+	rm gsl-${GSL_VERSION}.tar.gz
+
+cleanall-gsl: clean-gsl clean-gsl-tar
