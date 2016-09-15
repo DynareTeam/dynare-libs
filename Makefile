@@ -5,11 +5,11 @@ include versions.mk
 	clean-gsl clean-gsl-tar cleanall-gsl \
 	all
 
-all: sources/OpenBLAS sources/Boost sources/Gsl sources/Lapack sources/matIO
+all: sources/OpenBLAS sources/Boost sources/Gsl sources/Lapack sources/matIO sources/Slicot
 
-clean: clean-openblas clean-boost clean-gsl clean-lapack clean-matio
+clean: clean-openblas clean-boost clean-gsl clean-lapack clean-matio clean-slicot
 
-cleanall: cleanall-openblas cleanall-boost cleanall-gsl cleanall-lapack cleanall-matio
+cleanall: cleanall-openblas cleanall-boost cleanall-gsl cleanall-lapack cleanall-matio cleanall-slicot
 
 #
 # OpenBLAS library
@@ -120,3 +120,25 @@ clean-matio-tar:
 	rm matio-${MATIO_VERSION}.tar.gz
 
 cleanall-matio: clean-matio clean-matio-tar
+
+#
+# Slicot
+#
+
+sources/Slicot: slicot45.tar.gz
+	rm -rf sources/Slicot
+	tar -zxf slicot45.tar.gz
+	mkdir -p sources/Slicot
+	mv slicot/* sources/Slicot
+	rm -r slicot
+
+slicot45.tar.gz:
+	wget --user-agent="User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0) Gecko/20100101 Firefox/10.0" -c http://slicot.org/objects/software/shared/slicot45.tar.gz
+
+clean-slicot:
+	rm -rf sources/Slicot
+
+clean-slicot-tar:
+	rm -f slicot45.tar.gz
+
+cleanall-slicot: clean-slicot clean-slicot-tar
