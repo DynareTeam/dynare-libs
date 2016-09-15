@@ -5,11 +5,11 @@ include versions.mk
 	clean-gsl clean-gsl-tar cleanall-gsl \
 	all
 
-all: sources/OpenBLAS sources/Boost sources/Gsl
+all: sources/OpenBLAS sources/Boost sources/Gsl sources/Lapack
 
-clean: clean-openblas clean-boost clean-gsl
+clean: clean-openblas clean-boost clean-gsl clean-lapack
 
-cleanall: cleanall-openblas cleanall-boost cleanall-gsl
+cleanall: cleanall-openblas cleanall-boost cleanall-gsl cleanall-lapack
 
 #
 # OpenBLAS library
@@ -66,7 +66,7 @@ sources/Gsl: gsl-${GSL_VERSION}.tar.gz
 	mv gsl-${GSL_VERSION}/* sources/Gsl
 	rm -r gsl-${GSL_VERSION}
 
-gsl-${GSL_VERSION}.tar.gz:
+gsl-${GSL_VERSION}.tgz:
 	wget http://fr.mirror.babylon.network/gnu/gsl/gsl-${GSL_VERSION}.tar.gz
 
 clean-gsl:
@@ -76,3 +76,26 @@ clean-gsl-tar:
 	rm gsl-${GSL_VERSION}.tar.gz
 
 cleanall-gsl: clean-gsl clean-gsl-tar
+
+#
+# Lapack
+#
+
+sources/Lapack: lapack-${LAPACK_VERSION}.tgz
+	rm -rf sources/Lapack
+	tar -zxf lapack-${LAPACK_VERSION}.tgz
+	mkdir -p sources/Lapack
+	mv lapack-${LAPACK_VERSION}/* sources/Lapack
+	rm -r lapack-${LAPACK_VERSION}
+
+lapack-${LAPACK_VERSION}.tgz:
+	wget http://www.netlib.org/lapack/lapack-${LAPACK_VERSION}.tgz
+
+clean-lapack:
+	rm -r sources/Gsl
+
+clean-lapack-tar:
+	rm lapack-${LAPACK_VERSION}.tgz
+
+cleanall-lapack: clean-lapack clean-lapack-tar
+
