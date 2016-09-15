@@ -1,4 +1,11 @@
-# Cross compilation of libraries needed to build Dynare for Windows (32 and 64 bits)
+# Cross compilation of libraries needed to build Dynare on Windows (32 and 64 bits)
+
+- OpenBLAS
+- Boost
+- GSL
+- LAPACK
+- matIO
+- Slicot
 
 ## Requirements
 ```bash
