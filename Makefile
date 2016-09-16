@@ -25,6 +25,7 @@ sources/OpenBLAS: v${OPENBLAS_VERSION}.tar.gz
 v${OPENBLAS_VERSION}.tar.gz: versions.mk
 	rm -f v${OPENBLAS_VERSION}.tar.gz
 	wget http://github.com/xianyi/OpenBLAS/archive/v${OPENBLAS_VERSION}.tar.gz
+	touch v${OPENBLAS_VERSION}.tar.gz
 
 clean-openblas:
 	rm -rf sources/OpenBLAS
@@ -64,6 +65,7 @@ sources/Boost: boost_${BOOST_VERSION}.tar.bz2
 boost_${BOOST_VERSION}.tar.bz2: versions.mk
 	rm -f boost_${BOOST_VERSION}.tar.bz2
 	wget https://sourceforge.net/projects/boost/files/boost/`echo "${BOOST_VERSION}" | sed -e 's/_/./g'`/boost_${BOOST_VERSION}.tar.bz2/download -O boost_${BOOST_VERSION}.tar.bz2
+	touch boost_${BOOST_VERSION}.tar.bz2
 
 clean-boost:
 	rm -fr sources/Boost
@@ -87,6 +89,7 @@ sources/Gsl: gsl-${GSL_VERSION}.tar.gz
 gsl-${GSL_VERSION}.tar.gz: versions.mk
 	rm -f gsl-${GSL_VERSION}.tar.gz
 	wget http://fr.mirror.babylon.network/gnu/gsl/gsl-${GSL_VERSION}.tar.gz
+	touch gsl-${GSL_VERSION}.tar.gz
 
 clean-gsl:
 	rm -rf sources/Gsl
@@ -110,6 +113,7 @@ sources/Lapack: lapack-${LAPACK_VERSION}.tgz
 lapack-${LAPACK_VERSION}.tgz: versions.mk
 	rm -f lapack-${LAPACK_VERSION}.tgz
 	wget http://www.netlib.org/lapack/lapack-${LAPACK_VERSION}.tgz
+	touch lapack-${LAPACK_VERSION}.tgz
 
 clean-lapack:
 	rm -rf sources/Gsl
@@ -133,6 +137,7 @@ sources/matIO: matio-${MATIO_VERSION}.tar.gz
 matio-${MATIO_VERSION}.tar.gz: versions.mk
 	rm -f matio-${MATIO_VERSION}.tar.gz
 	wget https://sourceforge.net/projects/matio/files/matio/${MATIO_VERSION}/matio-${MATIO_VERSION}.tar.gz/download -O matio-${MATIO_VERSION}.tar.gz
+	touch matio-${MATIO_VERSION}.tar.gz
 
 clean-matio:
 	rm -r sources/matIO
@@ -156,6 +161,7 @@ sources/Slicot: slicot45.tar.gz
 slicot45.tar.gz: versions.mk
 	rm -f slicot45.tar.gz
 	wget --user-agent="User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0) Gecko/20100101 Firefox/10.0" -c http://slicot.org/objects/software/shared/slicot45.tar.gz
+	slicot45.tar.gz
 
 clean-slicot:
 	rm -rf sources/Slicot
