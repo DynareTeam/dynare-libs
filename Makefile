@@ -1,4 +1,8 @@
-include versions.mk
+include versions/openblas.version
+include versions/lapack.version
+include versions/gsl.version
+include versions/boost.version
+include versions/matio.version
 
 .PHONY: clean-openblas clean-openblas-tar cleanall-openblas \
 	clean-boost clean-boost-tar cleanall-boost \
@@ -22,7 +26,7 @@ sources/OpenBLAS: v${OPENBLAS_VERSION}.tar.gz
 	mv OpenBLAS-${OPENBLAS_VERSION}/* sources/OpenBLAS
 	rm -r OpenBLAS-${OPENBLAS_VERSION}
 
-v${OPENBLAS_VERSION}.tar.gz: versions.mk
+v${OPENBLAS_VERSION}.tar.gz: versions/openblas.version
 	rm -f v${OPENBLAS_VERSION}.tar.gz
 	wget http://github.com/xianyi/OpenBLAS/archive/v${OPENBLAS_VERSION}.tar.gz
 	touch v${OPENBLAS_VERSION}.tar.gz
@@ -62,7 +66,7 @@ sources/Boost: boost_${BOOST_VERSION}.tar.bz2
 	mv boost_${BOOST_VERSION}/* sources/Boost
 	rm -r boost_${BOOST_VERSION}
 
-boost_${BOOST_VERSION}.tar.bz2: versions.mk
+boost_${BOOST_VERSION}.tar.bz2: versions/boost.version
 	rm -f boost_${BOOST_VERSION}.tar.bz2
 	wget https://sourceforge.net/projects/boost/files/boost/`echo "${BOOST_VERSION}" | sed -e 's/_/./g'`/boost_${BOOST_VERSION}.tar.bz2/download -O boost_${BOOST_VERSION}.tar.bz2
 	touch boost_${BOOST_VERSION}.tar.bz2
@@ -86,7 +90,7 @@ sources/Gsl: gsl-${GSL_VERSION}.tar.gz
 	mv gsl-${GSL_VERSION}/* sources/Gsl
 	rm -r gsl-${GSL_VERSION}
 
-gsl-${GSL_VERSION}.tar.gz: versions.mk
+gsl-${GSL_VERSION}.tar.gz: versions/gsl.version
 	rm -f gsl-${GSL_VERSION}.tar.gz
 	wget http://fr.mirror.babylon.network/gnu/gsl/gsl-${GSL_VERSION}.tar.gz
 	touch gsl-${GSL_VERSION}.tar.gz
@@ -110,7 +114,7 @@ sources/Lapack: lapack-${LAPACK_VERSION}.tgz
 	mv lapack-${LAPACK_VERSION}/* sources/Lapack
 	rm -r lapack-${LAPACK_VERSION}
 
-lapack-${LAPACK_VERSION}.tgz: versions.mk
+lapack-${LAPACK_VERSION}.tgz: versions/lapack.version
 	rm -f lapack-${LAPACK_VERSION}.tgz
 	wget http://www.netlib.org/lapack/lapack-${LAPACK_VERSION}.tgz
 	touch lapack-${LAPACK_VERSION}.tgz
@@ -134,7 +138,7 @@ sources/matIO: matio-${MATIO_VERSION}.tar.gz
 	mv matio-${MATIO_VERSION}/* sources/matIO
 	rm -r matio-${MATIO_VERSION}
 
-matio-${MATIO_VERSION}.tar.gz: versions.mk
+matio-${MATIO_VERSION}.tar.gz: versions/matio.version
 	rm -f matio-${MATIO_VERSION}.tar.gz
 	wget https://sourceforge.net/projects/matio/files/matio/${MATIO_VERSION}/matio-${MATIO_VERSION}.tar.gz/download -O matio-${MATIO_VERSION}.tar.gz
 	touch matio-${MATIO_VERSION}.tar.gz
@@ -158,7 +162,7 @@ sources/Slicot: slicot45.tar.gz
 	mv slicot/* sources/Slicot
 	rm -r slicot
 
-slicot45.tar.gz: versions.mk
+slicot45.tar.gz:
 	rm -f slicot45.tar.gz
 	wget --user-agent="User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0) Gecko/20100101 Firefox/10.0" -c http://slicot.org/objects/software/shared/slicot45.tar.gz
 	slicot45.tar.gz
