@@ -22,7 +22,8 @@ sources/OpenBLAS: v${OPENBLAS_VERSION}.tar.gz
 	mv OpenBLAS-${OPENBLAS_VERSION}/* sources/OpenBLAS
 	rm -r OpenBLAS-${OPENBLAS_VERSION}
 
-v${OPENBLAS_VERSION}.tar.gz:
+v${OPENBLAS_VERSION}.tar.gz: versions.mk
+	rm -f v${OPENBLAS_VERSION}.tar.gz
 	wget http://github.com/xianyi/OpenBLAS/archive/v${OPENBLAS_VERSION}.tar.gz
 
 clean-openblas:
@@ -44,7 +45,8 @@ sources/Boost: boost_${BOOST_VERSION}.tar.bz2
 	mv boost_${BOOST_VERSION}/* sources/Boost
 	rm -r boost_${BOOST_VERSION}
 
-boost_${BOOST_VERSION}.tar.bz2:
+boost_${BOOST_VERSION}.tar.bz2: versions.mk
+	rm -f boost_${BOOST_VERSION}.tar.bz2
 	wget https://sourceforge.net/projects/boost/files/boost/`echo "${BOOST_VERSION}" | sed -e 's/_/./g'`/boost_${BOOST_VERSION}.tar.bz2/download -O boost_${BOOST_VERSION}.tar.bz2
 
 clean-boost:
@@ -66,7 +68,8 @@ sources/Gsl: gsl-${GSL_VERSION}.tar.gz
 	mv gsl-${GSL_VERSION}/* sources/Gsl
 	rm -r gsl-${GSL_VERSION}
 
-gsl-${GSL_VERSION}.tar.gz:
+gsl-${GSL_VERSION}.tar.gz: versions.mk
+	rm -f gsl-${GSL_VERSION}.tar.gz
 	wget http://fr.mirror.babylon.network/gnu/gsl/gsl-${GSL_VERSION}.tar.gz
 
 clean-gsl:
@@ -88,7 +91,8 @@ sources/Lapack: lapack-${LAPACK_VERSION}.tgz
 	mv lapack-${LAPACK_VERSION}/* sources/Lapack
 	rm -r lapack-${LAPACK_VERSION}
 
-lapack-${LAPACK_VERSION}.tgz:
+lapack-${LAPACK_VERSION}.tgz: versions.mk
+	rm -f lapack-${LAPACK_VERSION}.tgz
 	wget http://www.netlib.org/lapack/lapack-${LAPACK_VERSION}.tgz
 
 clean-lapack:
@@ -110,7 +114,8 @@ sources/matIO: matio-${MATIO_VERSION}.tar.gz
 	mv matio-${MATIO_VERSION}/* sources/matIO
 	rm -r matio-${MATIO_VERSION}
 
-matio-${MATIO_VERSION}.tar.gz:
+matio-${MATIO_VERSION}.tar.gz: versions.mk
+	rm matio-${MATIO_VERSION}.tar.gz
 	wget https://sourceforge.net/projects/matio/files/matio/${MATIO_VERSION}/matio-${MATIO_VERSION}.tar.gz/download -O matio-${MATIO_VERSION}.tar.gz
 
 clean-matio:
@@ -132,7 +137,8 @@ sources/Slicot: slicot45.tar.gz
 	mv slicot/* sources/Slicot
 	rm -r slicot
 
-slicot45.tar.gz:
+slicot45.tar.gz: versions.mk
+	rm -f slicot45.tar.gz
 	wget --user-agent="User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0) Gecko/20100101 Firefox/10.0" -c http://slicot.org/objects/software/shared/slicot45.tar.gz
 
 clean-slicot:
