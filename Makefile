@@ -131,14 +131,14 @@ sources/matIO: matio-${MATIO_VERSION}.tar.gz
 	rm -r matio-${MATIO_VERSION}
 
 matio-${MATIO_VERSION}.tar.gz: versions.mk
-	rm matio-${MATIO_VERSION}.tar.gz
+	rm -f matio-${MATIO_VERSION}.tar.gz
 	wget https://sourceforge.net/projects/matio/files/matio/${MATIO_VERSION}/matio-${MATIO_VERSION}.tar.gz/download -O matio-${MATIO_VERSION}.tar.gz
 
 clean-matio:
 	rm -r sources/matIO
 
 clean-matio-tar:
-	rm matio-${MATIO_VERSION}.tar.gz
+	rm -f matio-${MATIO_VERSION}.tar.gz
 
 cleanall-matio: clean-matio clean-matio-tar
 
