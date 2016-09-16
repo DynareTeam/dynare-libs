@@ -34,6 +34,22 @@ clean-openblas-tar:
 
 cleanall-openblas: clean-openblas clean-openblas-tar
 
+lib32/openblas.a: sources/OpenBLAS
+	cp sources/OpenBLAS/Makefile.rule sources/OpenBLAS/Makefile.rule.copy
+	patch sources/OpenBLAS/Makefile.rule < patch/openblas-w32.patch
+	make -C sources/OpenBLAS
+	mv sources/OpenBLAS/Makefile.rule.copy sources/OpenBLAS/Makefile.rule
+	i686-w64-mingw32-strip --strip-debug sources/OpenBLAS/libopenblas.a
+	mv sources/OpenBLAS/libopenblas.a lib32/openblas.a
+
+lib64/openblas.a: sources/OpenBLAS
+	cp sources/OpenBLAS/Makefile.rule sources/OpenBLAS/Makefile.rule.copy
+	patch sources/OpenBLAS/Makefile.rule < patch/openblas-w64.patch
+	make -C sources/OpenBLAS
+	mv sources/OpenBLAS/Makefile.rule.copy sources/OpenBLAS/Makefile.rule
+	x86_64-w64-mingw32-strip --strip-debug sources/OpenBLAS/libopenblas.a
+	mv sources/OpenBLAS/libopenblas.a lib64/openblas.a
+
 #
 # Boost library
 #
