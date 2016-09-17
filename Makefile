@@ -112,6 +112,18 @@ clean-gsl-tar:
 
 cleanall-gsl: clean-gsl clean-gsl-tar
 
+lib32/Gsl/lib/libgsl.a: sources/Gsl
+	cd sources/Gsl && ./configure --host=i686-w64-mingw32 --prefix=${ROOT_PATH}/lib32/Gsl --disable-shared --enable-static && make && make install
+
+lib64/Gsl/lib/libgsl.a: sources/Gsl
+	cd sources/Gsl && ./configure --host=x86_64-w64-mingw32 --prefix=${ROOT_PATH}/lib64/Gsl --disable-shared --enable-static && make && make install
+
+clean-gsl-32:
+	rm -rf lib32/Gsl
+
+clean-gsl-64:
+	rm -rf lib64/Gsl
+
 #
 # Lapack
 #
