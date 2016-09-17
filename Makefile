@@ -42,23 +42,21 @@ clean-openblas-tar:
 
 cleanall-openblas: clean-openblas clean-openblas-tar
 
-lib32/libopenblas.a: sources/OpenBLAS
+lib32/OpenBLAS/libopenblas.a: sources/OpenBLAS
 	cp sources/OpenBLAS/Makefile.rule sources/OpenBLAS/Makefile.rule.copy
 	patch sources/OpenBLAS/Makefile.rule < patch/openblas-w32.patch
 	make -C sources/OpenBLAS
 	mv sources/OpenBLAS/Makefile.rule.copy sources/OpenBLAS/Makefile.rule
 	i686-w64-mingw32-strip --strip-debug sources/OpenBLAS/libopenblas.a
-	mv sources/OpenBLAS/libopenblasp-r${OPENBLAS_VERSION}.a lib32/libopenblasp-r${OPENBLAS_VERSION}.a
-	mv sources/OpenBLAS/libopenblas.a lib32/libopenblas.a
+	mv sources/OpenBLAS/libopenblasp-r${OPENBLAS_VERSION}.a lib32/OpensBLAS/libopenblas.a
 
-lib64/libopenblas.a: sources/OpenBLAS
+lib64/OpenBLAS/libopenblas.a: sources/OpenBLAS
 	cp sources/OpenBLAS/Makefile.rule sources/OpenBLAS/Makefile.rule.copy
 	patch sources/OpenBLAS/Makefile.rule < patch/openblas-w64.patch
 	make -C sources/OpenBLAS
 	mv sources/OpenBLAS/Makefile.rule.copy sources/OpenBLAS/Makefile.rule
 	x86_64-w64-mingw32-strip --strip-debug sources/OpenBLAS/libopenblas.a
-	mv sources/OpenBLAS/libopenblasp-r${OPENBLAS_VERSION}.a lib64/libopenblasp-r${OPENBLAS_VERSION}.a
-	mv sources/OpenBLAS/libopenblas.a lib64/libopenblas.a
+	mv sources/OpenBLAS/libopenblasp-r${OPENBLAS_VERSION}.a lib64/OpenBLAS/libopenblas.a
 
 clean-openblas-32:
 	rm -rf lib32/*openblas*
