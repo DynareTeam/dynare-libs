@@ -10,7 +10,7 @@ include versions/zlib.version
 	clean-gsl clean-gsl-tar cleanall-gsl \
 	all
 
-all: sources/OpenBLAS sources/Boost sources/Gsl sources/Lapack sources/matIO sources/Slicot sources/Zlib
+download: sources/OpenBLAS sources/Boost sources/Gsl sources/Lapack sources/matIO sources/Slicot sources/Zlib
 
 clean: clean-openblas clean-boost clean-gsl clean-lapack clean-matio clean-slicot clean-zlib
 
