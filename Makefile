@@ -5,6 +5,8 @@ include versions/boost.version
 include versions/matio.version
 include versions/zlib.version
 
+ROOT_PATH = $(realpath .)
+
 .PHONY: clean-openblas clean-openblas-tar cleanall-openblas \
 	clean-boost clean-boost-tar cleanall-boost \
 	clean-gsl clean-gsl-tar cleanall-gsl \
@@ -201,3 +203,9 @@ clean-zlib-tar:
 	rm -f zlib-${ZLIB_VERSION}.tar.xz
 
 cleanall-zlib: clean-zlib clean-zlib-tar
+
+lib32/Zlib/lib/libz.a: sources/Zlib
+	cd sources/Zlib && CROSS_PREFIX=i686-w64-mingw32- ./configure --static --prefix=${ROOT_PATH}/lib32/Zlib && make install
+
+lib64/Zlib/lib/libz.a: sources/Zlib
+	cd sources/Zlib && CROSS_PREFIX=x86_64-w64-mingw32- ./configure --static --prefix=${ROOT_PATH}/lib64/Zlib && make install
