@@ -136,6 +136,28 @@ clean-lapack-tar:
 
 cleanall-lapack: clean-lapack clean-lapack-tar
 
+lib32/Lapack/liblapack.a: sources/Lapack
+	cp sources/Lapack/make.inc.example sources/Lapack/make.inc
+	patch sources/Lapack/make.inc < patch/lapack-w32.patch
+	make -C sources/Lapack/SRC
+	i686-w64-mingw32-strip --strip-debug sources/Lapack/liblapack.a
+	mkdir -p lib32/Lapack
+	mv sources/Lapack/liblapack.a lib32/Lapack/liblapack.a
+
+lib64/Lapack/liblapack.a: sources/Lapack
+	cp sources/Lapack/make.inc.example sources/Lapack/make.inc
+	patch sources/Lapack/make.inc < patch/lapack-w64.patch
+	make -C sources/Lapack/SRC
+	x86_64-w64-mingw32-strip --strip-debug sources/Lapack/liblapack.a
+	mkdir -p lib64/Lapack
+	mv sources/Lapack/liblapack.a lib64/Lapack/liblapack.a
+
+clean-lapack-32:
+	rm -rf lib32/Lapack
+
+clean-lapack-64:
+	rm -rf lib64/Lapack
+
 #
 # matIO
 #
