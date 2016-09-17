@@ -163,6 +163,18 @@ clean-matio-tar:
 
 cleanall-matio: clean-matio clean-matio-tar
 
+lib32/matIO/lib/libmatio.a: sources/matIO lib32/Zlib/lib/libz.a
+	cd sources/matIO && CROSS_PREFIX=i686-w64-mingw32- ./configure --disable-shared --with-zlib=${ROOT_PATH}/lib32/Zlib --prefix=${ROOT_PATH}/lib32/matIO && make install
+
+lib64/matIO/lib/libmatio.a: sources/matIO lib64/Zlib/lib/libz.a
+	cd sources/matIO && CROSS_PREFIX=x86_64-w64-mingw32- ./configure --disable-shared --with-zlib=${ROOT_PATH}/lib64/Zlib --prefix=${ROOT_PATH}/lib64/matIO && make install
+
+clean-matio-32:
+	rm -rf lib32/matIO
+
+clean-matio-64:
+	rm -rf lib64/matIO
+
 #
 # Slicot
 #
