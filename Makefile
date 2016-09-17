@@ -60,6 +60,13 @@ lib64/libopenblas.a: sources/OpenBLAS
 	mv sources/OpenBLAS/libopenblasp-r${OPENBLAS_VERSION}.a lib64/libopenblasp-r${OPENBLAS_VERSION}.a
 	mv sources/OpenBLAS/libopenblas.a lib64/libopenblas.a
 
+clean-openblas-32:
+	rm -rf lib32/*openblas*
+
+clean-openblas-64:
+	rm -rf lib64/*openblas*
+
+
 #
 # Boost library
 #
@@ -209,3 +216,9 @@ lib32/Zlib/lib/libz.a: sources/Zlib
 
 lib64/Zlib/lib/libz.a: sources/Zlib
 	cd sources/Zlib && CROSS_PREFIX=x86_64-w64-mingw32- ./configure --static --prefix=${ROOT_PATH}/lib64/Zlib && make install
+
+clean-zlib-32:
+	rm -rf lib32/Zlib
+
+clean-zlib-64:
+	rm -rf lib64/Zlib
