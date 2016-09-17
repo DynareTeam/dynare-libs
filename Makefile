@@ -3,17 +3,18 @@ include versions/lapack.version
 include versions/gsl.version
 include versions/boost.version
 include versions/matio.version
+include versions/zlib.version
 
 .PHONY: clean-openblas clean-openblas-tar cleanall-openblas \
 	clean-boost clean-boost-tar cleanall-boost \
 	clean-gsl clean-gsl-tar cleanall-gsl \
 	all
 
-all: sources/OpenBLAS sources/Boost sources/Gsl sources/Lapack sources/matIO sources/Slicot
+all: sources/OpenBLAS sources/Boost sources/Gsl sources/Lapack sources/matIO sources/Slicot sources/Zlib
 
-clean: clean-openblas clean-boost clean-gsl clean-lapack clean-matio clean-slicot
+clean: clean-openblas clean-boost clean-gsl clean-lapack clean-matio clean-slicot clean-zlib
 
-cleanall: cleanall-openblas cleanall-boost cleanall-gsl cleanall-lapack cleanall-matio cleanall-slicot
+cleanall: cleanall-openblas cleanall-boost cleanall-gsl cleanall-lapack cleanall-matio cleanall-slicot cleanall-zlib
 
 #
 # OpenBLAS library
@@ -176,3 +177,27 @@ clean-slicot-tar:
 	rm -f slicot45.tar.gz
 
 cleanall-slicot: clean-slicot clean-slicot-tar
+
+#
+# Zlib
+#
+
+sources/Zlib: zlib-${ZLIB_VERSION}.tar.xz
+	rm -rf sources/Zlib
+	tar -xJf zlib-${ZLIB_VERSION}.tar.xz
+	mkdir -p sources/Zlib
+	mv zlib-${ZLIB_VERSION}/* sources/Zlib
+	rm -r zlib-${ZLIB_VERSION}
+
+zlib-${ZLIB_VERSION}.tar.xz: versions/zlib.version
+	rm -f zlib-${ZLIB_VERSION}.tar.xz
+	wget https://sourceforge.net/projects/libpng/files/zlib/${ZLIB_VERSION}/zlib-${ZLIB_VERSION}.tar.xz/download -O zlib-${ZLIB_VERSION}.tar.xz
+	touch zlib-${ZLIB_VERSION}.tar.xz
+
+clean-zlib:
+	rm -r sources/Zlib
+
+clean-zlib-tar:
+	rm -f zlib-${ZLIB_VERSION}.tar.xz
+
+cleanall-zlib: clean-zlib clean-zlib-tar
