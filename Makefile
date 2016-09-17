@@ -64,7 +64,6 @@ clean-openblas-32:
 clean-openblas-64:
 	rm -rf lib64/*openblas*
 
-
 #
 # Boost library
 #
@@ -130,7 +129,7 @@ lapack-${LAPACK_VERSION}.tgz: versions/lapack.version
 	touch lapack-${LAPACK_VERSION}.tgz
 
 clean-lapack:
-	rm -rf sources/Gsl
+	rm -rf sources/Lapack
 
 clean-lapack-tar:
 	rm -f lapack-${LAPACK_VERSION}.tgz
