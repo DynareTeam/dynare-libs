@@ -230,6 +230,40 @@ clean-slicot-tar:
 
 cleanall-slicot: clean-slicot clean-slicot-tar
 
+lib32/Slicot/without-underscore/libslicot_pic.a:
+	patch sources/Slicot/make.inc < patch/slicot-32-without-underscore.patch
+	make -C sources/Slicot lib
+	i686-w64-mingw32-strip --strip-debug sources/Slicot/libslicot_pic.a
+	mkdir -p lib32/Slicot/without-underscore
+	mv sources/Slicot/libslicot_pic.a lib32/Slicot/without-underscore/libslicot_pic.a
+
+lib32/Slicot/with-underscore/libslicot_pic.a:
+	patch sources/Slicot/make.inc < patch/slicot-32-with-underscore.patch
+	make -C sources/Slicot lib
+	i686-w64-mingw32-strip --strip-debug sources/Slicot/libslicot_pic.a
+	mkdir -p lib32/Slicot/with-underscore
+	mv sources/Slicot/libslicot_pic.a lib32/Slicot/with-underscore/libslicot_pic.a
+
+lib64/Slicot/libslicot_pic.a:
+	patch sources/Slicot/make.inc < patch/slicot-64-with-32bit-integer.patch
+	make -C sources/Slicot lib
+	x86_64-w64-mingw32-strip --strip-debug sources/Slicot/libslicot_pic.a
+	mkdir -p lib64/Slicot
+	mv sources/Slicot/libslicot_pic.a lib64/Slicot/libslicot_pic.a
+
+lib64/Slicot/libslicot64_pic.a:
+	patch sources/Slicot/make.inc < patch/slicot-64-with-64bit-integer.patch
+	make -C sources/Slicot lib
+	x86_64-w64-mingw32-strip --strip-debug sources/Slicot/libslicot64_pic.a
+	mkdir -p lib64/Slicot
+	mv sources/Slicot/libslicot64_pic.a lib64/Slicot/libslicot64_pic.a
+
+clean-slicot-32:
+	rm -rf lib32/Slicot
+
+clean-slicot-64:
+	rm -rf lib64/Slicot
+
 #
 # Zlib
 #
