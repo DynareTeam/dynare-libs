@@ -10,9 +10,14 @@ ROOT_PATH = $(realpath .)
 .PHONY: clean-openblas clean-openblas-tar cleanall-openblas \
 	clean-boost clean-boost-tar cleanall-boost \
 	clean-gsl clean-gsl-tar cleanall-gsl \
-	all
+	clean-matio clean-matio-tar cleanall-matio \
+	clean-zlib clean-zlib-tar cleanall-zlib \
+	clean-lapack clean-lapack-tar cleanall-lapack \
+	download
 
-download: sources/OpenBLAS sources/Boost sources/Gsl sources/Lapack sources/matIO sources/Slicot sources/Zlib
+download: sources/OpenBLAS/32 sources/OpenBLAS/64 sources/Boost sources/Gsl sources/Lapack sources/matIO sources/Slicot sources/Zlib
+
+build: build-openblas
 
 clean: clean-openblas clean-boost clean-gsl clean-lapack clean-matio clean-slicot clean-zlib
 
@@ -22,47 +27,60 @@ cleanall: cleanall-openblas cleanall-boost cleanall-gsl cleanall-lapack cleanall
 # OpenBLAS library
 #
 
-sources/OpenBLAS: v${OPENBLAS_VERSION}.tar.gz
-	rm -rf sources/OpenBLAS
-	tar -zxf v${OPENBLAS_VERSION}.tar.gz
-	mkdir sources/OpenBLAS
-	mv OpenBLAS-${OPENBLAS_VERSION}/* sources/OpenBLAS
-	rm -r OpenBLAS-${OPENBLAS_VERSION}
+sources/OpenBLAS/32: v${OPENBLAS_VERSION}.tar.gz
+	mkdir -p tmp-openblas-32
+	tar -zxf v${OPENBLAS_VERSION}.tar.gz --directory tmp-openblas-32
+	mkdir -p sources/OpenBLAS/32
+	mv tmp-openblas-32/OpenBLAS-${OPENBLAS_VERSION}/* sources/OpenBLAS/32
+	rm -rf tmp-openblas-32
+
+sources/OpenBLAS/64: v${OPENBLAS_VERSION}.tar.gz
+	mkdir -p tmp-openblas-64
+	tar -zxf v${OPENBLAS_VERSION}.tar.gz --directory tmp-openblas-64
+	mkdir -p sources/OpenBLAS/64
+	mv tmp-openblas-64/OpenBLAS-${OPENBLAS_VERSION}/* sources/OpenBLAS/64
+	rm -rf tmp-openblas-64
 
 v${OPENBLAS_VERSION}.tar.gz: versions/openblas.version
-	rm -f v${OPENBLAS_VERSION}.tar.gz
 	wget http://github.com/xianyi/OpenBLAS/archive/v${OPENBLAS_VERSION}.tar.gz
 	touch v${OPENBLAS_VERSION}.tar.gz
 
-clean-openblas:
-	rm -rf sources/OpenBLAS
+clean-openblas: clean-openblas-32 clean-openblas-64
 
 clean-openblas-tar:
 	rm -f v${OPENBLAS_VERSION}.tar.gz
 
 cleanall-openblas: clean-openblas clean-openblas-tar
 
-lib32/OpenBLAS/libopenblas.a: sources/OpenBLAS
-	cp sources/OpenBLAS/Makefile.rule sources/OpenBLAS/Makefile.rule.copy
-	patch sources/OpenBLAS/Makefile.rule < patch/openblas-w32.patch
-	make -C sources/OpenBLAS
-	mv sources/OpenBLAS/Makefile.rule.copy sources/OpenBLAS/Makefile.rule
-	i686-w64-mingw32-strip --strip-debug sources/OpenBLAS/libopenblas.a
-	mv sources/OpenBLAS/libopenblasp-r${OPENBLAS_VERSION}.a lib32/OpensBLAS/libopenblas.a
-
-lib64/OpenBLAS/libopenblas.a: sources/OpenBLAS
-	cp sources/OpenBLAS/Makefile.rule sources/OpenBLAS/Makefile.rule.copy
-	patch sources/OpenBLAS/Makefile.rule < patch/openblas-w64.patch
-	make -C sources/OpenBLAS
-	mv sources/OpenBLAS/Makefile.rule.copy sources/OpenBLAS/Makefile.rule
-	x86_64-w64-mingw32-strip --strip-debug sources/OpenBLAS/libopenblas.a
-	mv sources/OpenBLAS/libopenblasp-r${OPENBLAS_VERSION}.a lib64/OpenBLAS/libopenblas.a
-
 clean-openblas-32:
-	rm -rf lib32/*openblas*
+	rm -rf sources/OpenBLAS/32
 
 clean-openblas-64:
-	rm -rf lib64/*openblas*
+	rm -rf sources/OpenBLAS/64
+
+lib32/OpenBLAS/libopenblas.a: sources/OpenBLAS/32
+	patch sources/OpenBLAS/32/Makefile.rule < patch/openblas-w32.patch
+	make -C sources/OpenBLAS/32
+	i686-w64-mingw32-strip --strip-debug sources/OpenBLAS/32/libopenblasp-r${OPENBLAS_VERSION}.a
+	mkdir -p lib32/OpenBLAS
+	cp sources/OpenBLAS/32/libopenblasp-r${OPENBLAS_VERSION}.a lib32/OpenBLAS/libopenblas.a
+
+lib64/OpenBLAS/libopenblas.a: sources/OpenBLAS/64
+	patch sources/OpenBLAS/64/Makefile.rule < patch/openblas-w64.patch
+	make -C sources/OpenBLAS/64
+	x86_64-w64-mingw32-strip --strip-debug sources/OpenBLAS/64/libopenblasp-r${OPENBLAS_VERSION}.a
+	mkdir -p lib64/OpenBLAS
+	cp sources/OpenBLAS/64/libopenblasp-r${OPENBLAS_VERSION}.a lib64/OpenBLAS/libopenblas.a
+
+clean-libopenblas: clean-libopenblas-32 clean-libopenblas-64
+
+clean-libopenblas-32:
+	rm -rf lib32/OpenBLAS
+
+clean-libopenblas-64:
+	rm -rf lib64/OpenBLAS
+
+build-openblas: lib32/OpenBLAS/libopenblas.a lib64/OpenBLAS/libopenblas.a
 
 #
 # Boost library
