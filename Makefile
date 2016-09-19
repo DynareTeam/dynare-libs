@@ -17,7 +17,7 @@ ROOT_PATH = $(realpath .)
 
 download: sources/OpenBLAS/32 sources/OpenBLAS/64 sources/Boost sources/Gsl sources/Lapack sources/matIO sources/Slicot sources/Zlib
 
-build: build-openblas
+build: build-openblas build-lapack build-slicot build-matio build-boost build-gsl
 
 clean: clean-openblas clean-boost clean-gsl clean-lapack clean-matio clean-slicot clean-zlib
 
