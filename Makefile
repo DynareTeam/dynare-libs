@@ -45,18 +45,7 @@ v${OPENBLAS_VERSION}.tar.gz: versions/openblas.version
 	wget http://github.com/xianyi/OpenBLAS/archive/v${OPENBLAS_VERSION}.tar.gz
 	touch v${OPENBLAS_VERSION}.tar.gz
 
-clean-openblas: clean-openblas-32 clean-openblas-64
-
-clean-openblas-tar:
-	rm -f v${OPENBLAS_VERSION}.tar.gz
-
-cleanall-openblas: clean-openblas clean-openblas-tar
-
-clean-openblas-32:
-	rm -rf sources/OpenBLAS/32
-
-clean-openblas-64:
-	rm -rf sources/OpenBLAS/64
+build-openblas: lib32/OpenBLAS/libopenblas.a lib64/OpenBLAS/libopenblas.a
 
 lib32/OpenBLAS/libopenblas.a: sources/OpenBLAS/32
 	patch sources/OpenBLAS/32/Makefile.rule < patch/openblas-w32.patch
@@ -72,6 +61,19 @@ lib64/OpenBLAS/libopenblas.a: sources/OpenBLAS/64
 	mkdir -p lib64/OpenBLAS
 	cp sources/OpenBLAS/64/libopenblasp-r${OPENBLAS_VERSION}.a lib64/OpenBLAS/libopenblas.a
 
+clean-openblas: clean-openblas-32 clean-openblas-64
+
+clean-openblas-tar:
+	rm -f v${OPENBLAS_VERSION}.tar.gz
+
+cleanall-openblas: clean-openblas clean-openblas-tar
+
+clean-openblas-32:
+	rm -rf sources/OpenBLAS/32
+
+clean-openblas-64:
+	rm -rf sources/OpenBLAS/64
+
 clean-libopenblas: clean-libopenblas-32 clean-libopenblas-64
 
 clean-libopenblas-32:
@@ -79,8 +81,6 @@ clean-libopenblas-32:
 
 clean-libopenblas-64:
 	rm -rf lib64/OpenBLAS
-
-build-openblas: lib32/OpenBLAS/libopenblas.a lib64/OpenBLAS/libopenblas.a
 
 #
 # Boost library
@@ -98,11 +98,17 @@ boost_${BOOST_VERSION}.tar.bz2: versions/boost.version
 	wget https://sourceforge.net/projects/boost/files/boost/`echo "${BOOST_VERSION}" | sed -e 's/_/./g'`/boost_${BOOST_VERSION}.tar.bz2/download -O boost_${BOOST_VERSION}.tar.bz2
 	touch boost_${BOOST_VERSION}.tar.bz2
 
-build-boost: sources/Boost
+build-boost: sources/Boost lib32/Boost/include lib64/Boost/include
+
+lib32/Boost/include: sources/Boost
 	mkdir -p lib32/Boost/include
-	mkdir -p lib64/Boost/include
 	ln -s ${ROOT_PATH}/sources/Boost/boost ${ROOT_PATH}/lib32/Boost/include/boost
+	touch lib32/Boost/include
+
+lib64/Boost/include: sources/Boost
+	mkdir -p lib64/Boost/include
 	ln -s ${ROOT_PATH}/sources/Boost/boost ${ROOT_PATH}/lib64/Boost/include/boost
+	touch lib64/Boost/include
 
 clean-boost:
 	rm -fr sources/Boost
@@ -196,6 +202,7 @@ lib32/Lapack/liblapack.a: sources/Lapack/32
 	i686-w64-mingw32-strip --strip-debug sources/Lapack/32/liblapack.a
 	mkdir -p lib32/Lapack
 	mv sources/Lapack/32/liblapack.a lib32/Lapack/liblapack.a
+	touch lib32/Lapack/liblapack.a
 
 lib64/Lapack/liblapack.a: sources/Lapack/64
 	cp sources/Lapack/64/make.inc.example sources/Lapack/64/make.inc
@@ -204,6 +211,7 @@ lib64/Lapack/liblapack.a: sources/Lapack/64
 	x86_64-w64-mingw32-strip --strip-debug sources/Lapack/64/liblapack.a
 	mkdir -p lib64/Lapack
 	mv sources/Lapack/64/liblapack.a lib64/Lapack/liblapack.a
+	touch lib64/Lapack/liblapack.a
 
 build-lapack: lib32/Lapack/liblapack.a lib64/Lapack/liblapack.a
 
@@ -321,6 +329,7 @@ lib32/Slicot/without-underscore/libslicot_pic.a: sources/Slicot/32/without-under
 	i686-w64-mingw32-strip --strip-debug sources/Slicot//32/without-underscore/libslicot_pic.a
 	mkdir -p lib32/Slicot/without-underscore
 	mv sources/Slicot/32/without-underscore/libslicot_pic.a lib32/Slicot/without-underscore/libslicot_pic.a
+	touch lib32/Slicot/without-underscore/libslicot_pic.a
 
 lib32/Slicot/with-underscore/libslicot_pic.a: sources/Slicot/32/with-underscore
 	patch sources/Slicot/32/with-underscore/make.inc < patch/slicot-32-with-underscore.patch
@@ -328,6 +337,7 @@ lib32/Slicot/with-underscore/libslicot_pic.a: sources/Slicot/32/with-underscore
 	i686-w64-mingw32-strip --strip-debug sources/Slicot/32/with-underscore/libslicot_pic.a
 	mkdir -p lib32/Slicot/with-underscore
 	mv sources/Slicot/32/with-underscore/libslicot_pic.a lib32/Slicot/with-underscore/libslicot_pic.a
+	touch lib32/Slicot/with-underscore/libslicot_pic.a
 
 lib64/Slicot/libslicot_pic.a: sources/Slicot/64/with-32bit-integer
 	patch sources/Slicot/64/with-32bit-integer/make.inc < patch/slicot-64-with-32bit-integer.patch
@@ -335,6 +345,7 @@ lib64/Slicot/libslicot_pic.a: sources/Slicot/64/with-32bit-integer
 	x86_64-w64-mingw32-strip --strip-debug sources/Slicot/64/with-32bit-integer/libslicot_pic.a
 	mkdir -p lib64/Slicot
 	mv sources/Slicot/64/with-32bit-integer/libslicot_pic.a lib64/Slicot/libslicot_pic.a
+	touch lib64/Slicot/libslicot_pic.a
 
 lib64/Slicot/libslicot64_pic.a: sources/Slicot/64/with-64bit-integer
 	patch sources/Slicot/64/with-64bit-integer/make.inc < patch/slicot-64-with-64bit-integer.patch
@@ -342,6 +353,7 @@ lib64/Slicot/libslicot64_pic.a: sources/Slicot/64/with-64bit-integer
 	x86_64-w64-mingw32-strip --strip-debug sources/Slicot/64/with-64bit-integer/libslicot64_pic.a
 	mkdir -p lib64/Slicot
 	mv sources/Slicot/64/with-64bit-integer/libslicot64_pic.a lib64/Slicot/libslicot64_pic.a
+	touch lib64/Slicot/libslicot64_pic.a
 
 build-slicot: lib32/Slicot/without-underscore/libslicot_pic.a lib32/Slicot/with-underscore/libslicot_pic.a lib64/Slicot/libslicot_pic.a lib64/Slicot/libslicot64_pic.a
 
