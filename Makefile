@@ -110,36 +110,51 @@ cleanall-boost: clean-boost clean-boost-tar
 # Gsl
 #
 
-sources/Gsl: gsl-${GSL_VERSION}.tar.gz
-	rm -rf sources/Gsl
-	tar -zxf gsl-${GSL_VERSION}.tar.gz
-	mkdir -p sources/Gsl
-	mv gsl-${GSL_VERSION}/* sources/Gsl
-	rm -r gsl-${GSL_VERSION}
+sources/Gsl/32: gsl-${GSL_VERSION}.tar.gz
+	mkdir -p tmp-gsl-32 
+	tar -zxf gsl-${GSL_VERSION}.tar.gz --directory tmp-gsl-32
+	mkdir -p sources/Gsl/32
+	mv tmp-gsl-32/gsl-${GSL_VERSION}/* sources/Gsl/32
+	rm -rf tmp-gsl-32
+
+sources/Gsl/64: gsl-${GSL_VERSION}.tar.gz
+	mkdir -p tmp-gsl-64 
+	tar -zxf gsl-${GSL_VERSION}.tar.gz --directory tmp-gsl-64
+	mkdir -p sources/Gsl/64
+	mv tmp-gsl-64/gsl-${GSL_VERSION}/* sources/Gsl/64
+	rm -rf tmp-gsl-64
 
 gsl-${GSL_VERSION}.tar.gz: versions/gsl.version
-	rm -f gsl-${GSL_VERSION}.tar.gz
 	wget http://fr.mirror.babylon.network/gnu/gsl/gsl-${GSL_VERSION}.tar.gz
 	touch gsl-${GSL_VERSION}.tar.gz
 
-clean-gsl:
-	rm -rf sources/Gsl
+lib32/Gsl/lib/libgsl.a: sources/Gsl/32
+	cd sources/Gsl/32 && ./configure --host=i686-w64-mingw32 --prefix=${ROOT_PATH}/lib32/Gsl --disable-shared --enable-static && make && make install
+
+lib64/Gsl/lib/libgsl.a: sources/Gsl/64
+	cd sources/Gsl/64 && ./configure --host=x86_64-w64-mingw32 --prefix=${ROOT_PATH}/lib64/Gsl --disable-shared --enable-static && make && make install
+
+build-gsl: lib32/Gsl/lib/libgsl.a lib64/Gsl/lib/libgsl.a
+
+clean-gsl: clean-gsl-32 clean-64
+
+clean-libgsl: clean-libgsl-32 clean-libgsl-64
 
 clean-gsl-tar:
 	rm -f gsl-${GSL_VERSION}.tar.gz
 
 cleanall-gsl: clean-gsl clean-gsl-tar
 
-lib32/Gsl/lib/libgsl.a: sources/Gsl
-	cd sources/Gsl && ./configure --host=i686-w64-mingw32 --prefix=${ROOT_PATH}/lib32/Gsl --disable-shared --enable-static && make && make install
-
-lib64/Gsl/lib/libgsl.a: sources/Gsl
-	cd sources/Gsl && ./configure --host=x86_64-w64-mingw32 --prefix=${ROOT_PATH}/lib64/Gsl --disable-shared --enable-static && make && make install
-
 clean-gsl-32:
-	rm -rf lib32/Gsl
+	rm -rf sources/Gsl/32
 
 clean-gsl-64:
+	rm -rf sources/Gsl/64
+
+clean-libgsl-32:
+	rm -rf lib32/Gsl
+
+clean-libgsl-64:
 	rm -rf lib64/Gsl
 
 #
