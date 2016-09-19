@@ -7,21 +7,26 @@ include versions/zlib.version
 
 ROOT_PATH = $(realpath .)
 
-.PHONY: clean-openblas clean-openblas-tar cleanall-openblas \
-	clean-boost clean-boost-tar cleanall-boost \
-	clean-gsl clean-gsl-tar cleanall-gsl \
-	clean-matio clean-matio-tar cleanall-matio \
-	clean-zlib clean-zlib-tar cleanall-zlib \
-	clean-lapack clean-lapack-tar cleanall-lapack \
-	download
+.PHONY: clean-openblas-scr clean-openblas-tar clean-openblas-all clean-libopenblas \
+	clean-boost-scr clean-boost-tar clean-boost-all \
+	clean-gsl-scr clean-gsl-tar clean-gsl-all clean-libgsl\
+	clean-slicot-scr clean-slicot-tar clean-slicot-all clean-libslicot\
+	clean-matio-scr clean-matio-tar clean-matio-all clean-libmatio\
+	clean-zlib-scr clean-zlib-tar clean-zlib-scr clean-libzlib\
+	clean-lapack-scr clean-lapack-tar clean-lapack-all clean-liblapack\
+	download build clean-src clean-all clean-lib clean-tar
 
 download: sources/OpenBLAS/32 sources/OpenBLAS/64 sources/Boost sources/Gsl sources/Lapack sources/matIO sources/Slicot sources/Zlib
 
 build: build-openblas build-lapack build-slicot build-matio build-boost build-gsl
 
-clean: clean-openblas clean-boost clean-gsl clean-lapack clean-matio clean-slicot clean-zlib
+clean-lib: clean-libopenblas clean-liblapack clean-libgsl clean-libzlib clean-libmatio clean-libslicot
 
-cleanall: cleanall-openblas cleanall-boost cleanall-gsl cleanall-lapack cleanall-matio cleanall-slicot cleanall-zlib
+clean-src: clean-openblas-src clean-boost-src clean-gsl-src clean-lapack-src clean-matio-src clean-slicot-src clean-zlib-src
+
+clean-tar: clean-openblas-tar clean-boost-tar clean-gsl-tar clean-lapack-tar clean-matio-tar clean-slicot-tar clean-zlib-tar
+
+clean-all: clean-lib clean-src clean-tar
 
 #
 # OpenBLAS library
@@ -61,17 +66,17 @@ lib64/OpenBLAS/libopenblas.a: sources/OpenBLAS/64
 	mkdir -p lib64/OpenBLAS
 	cp sources/OpenBLAS/64/libopenblasp-r${OPENBLAS_VERSION}.a lib64/OpenBLAS/libopenblas.a
 
-clean-openblas: clean-openblas-32 clean-openblas-64
+clean-openblas-src: clean-openblas-32-src clean-openblas-64-src
 
 clean-openblas-tar:
 	rm -f v${OPENBLAS_VERSION}.tar.gz
 
-cleanall-openblas: clean-openblas clean-openblas-tar
+clean-openblas-all: clean-openblas-src clean-openblas-tar clean-libopenblas
 
-clean-openblas-32:
+clean-openblas-32-src:
 	rm -rf sources/OpenBLAS/32
 
-clean-openblas-64:
+clean-openblas-64-src:
 	rm -rf sources/OpenBLAS/64
 
 clean-libopenblas: clean-libopenblas-32 clean-libopenblas-64
@@ -110,7 +115,7 @@ lib64/Boost/include: sources/Boost
 	ln -s ${ROOT_PATH}/sources/Boost/boost ${ROOT_PATH}/lib64/Boost/include/boost
 	touch lib64/Boost/include
 
-clean-boost:
+clean-boost-src:
 	rm -fr sources/Boost
 
 clean-libboost:
@@ -120,7 +125,7 @@ clean-libboost:
 clean-boost-tar:
 	rm -f boost_${BOOST_VERSION}.tar.bz2
 
-cleanall-boost: clean-boost clean-boost-tar
+clean-boost-all: clean-boost-src clean-boost-tar clean-libboost
 
 #
 # Gsl
@@ -152,19 +157,19 @@ lib64/Gsl/lib/libgsl.a: sources/Gsl/64
 
 build-gsl: lib32/Gsl/lib/libgsl.a lib64/Gsl/lib/libgsl.a
 
-clean-gsl: clean-gsl-32 clean-64
+clean-gsl-src: clean-gsl-32-src clean-64-src
 
 clean-libgsl: clean-libgsl-32 clean-libgsl-64
 
 clean-gsl-tar:
 	rm -f gsl-${GSL_VERSION}.tar.gz
 
-cleanall-gsl: clean-gsl clean-gsl-tar
+clean-gsl-all: clean-gsl-src clean-gsl-tar clean-libgsl
 
-clean-gsl-32:
+clean-gsl-32-src:
 	rm -rf sources/Gsl/32
 
-clean-gsl-64:
+clean-gsl-64-src:
 	rm -rf sources/Gsl/64
 
 clean-libgsl-32:
@@ -215,14 +220,14 @@ lib64/Lapack/liblapack.a: sources/Lapack/64
 
 build-lapack: lib32/Lapack/liblapack.a lib64/Lapack/liblapack.a
 
-clean-lapack: clean-lapack-32 clean-lapack-64
+clean-lapack-src: clean-lapack-32-src clean-lapack-64-src
 
 clean-liblapack: clean-liblapack-32 clean-liblapack-64
 
 clean-lapack-tar:
 	rm -f lapack-${LAPACK_VERSION}.tgz
 
-cleanall-lapack: clean-lapack clean-lapack-tar
+clean-lapack-all: clean-lapack-src clean-lapack-tar clean-liblapack
 
 clean-liblapack-32:
 	rm -rf lib32/Lapack
@@ -230,10 +235,10 @@ clean-liblapack-32:
 clean-liblapack-64:
 	rm -rf lib64/Lapack
 
-clean-lapack-32:
+clean-lapack-32-src:
 	rm -rf sources/Lapack/32
 
-clean-lapack-64:
+clean-lapack-64-src:
 	rm -rf sources/Lapack/64
 
 #
@@ -266,19 +271,19 @@ lib64/matIO/lib/libmatio.a: sources/matIO/64 lib64/Zlib/lib/libz.a
 
 build-matio: build-zlib lib32/matIO/lib/libmatio.a lib64/matIO/lib/libmatio.a
 
-clean-matio: clean-matio-32 clean-matio-64
+clean-matio-src: clean-matio-32-src clean-matio-64-src
 
 clean-libmatio: clean-libmatio-32 clean-libmatio-64
 
 clean-matio-tar:
 	rm -f matio-${MATIO_VERSION}.tar.gz
 
-cleanall-matio: clean-matio clean-matio-tar
+clean-matio-all: clean-matio-src clean-matio-tar clean-libmatio
 
-clean-matio-32:
+clean-matio-32-src:
 	rm -rf sources/matIO/32
 
-clean-matio-64:
+clean-matio-64-src:
 	rm -rf sources/matIO/64
 
 clean-libmatio-32:
@@ -357,25 +362,25 @@ lib64/Slicot/libslicot64_pic.a: sources/Slicot/64/with-64bit-integer
 
 build-slicot: lib32/Slicot/without-underscore/libslicot_pic.a lib32/Slicot/with-underscore/libslicot_pic.a lib64/Slicot/libslicot_pic.a lib64/Slicot/libslicot64_pic.a
 
-clean-slicot: clean-slicot-32-with-underscore clean-slicot-32-without-underscore clean-slicot-64-with-32bit-integer clean-slicot-64-with-64bit-integer
+clean-slicot-src: clean-slicot-32-with-underscore-src clean-slicot-32-without-underscore-src clean-slicot-64-with-32bit-integer-src clean-slicot-64-with-64bit-integer-src
 
 clean-libslicot: clean-libslicot-32-without-underscore clean-libslicot-32-with-underscore clean-libslicot-64
 
 clean-slicot-tar:
 	rm -f slicot45.tar.gz
 
-cleanall-slicot: clean-slicot clean-slicot-tar
+clean-slicot-all: clean-slicot-src clean-slicot-tar clean-libslicot
 
-clean-slicot-32-with-underscore:
+clean-slicot-32-with-underscore-src:
 	rm -rf sources/Slicot/32/with-underscore
 
-clean-slicot-32-without-underscore:
+clean-slicot-32-without-underscore-src:
 	rm -rf sources/Slicot/32/without-underscore
 
-clean-slicot-64-with-32bit-integer:
+clean-slicot-64-with-32bit-integer-src:
 	rm -rf sources/Slicot/64/with-32bit-integer
 
-clean-slicot-64-with-64bit-integer:
+clean-slicot-64-with-64bit-integer-src:
 	rm -rf sources/Slicot/64/with-64bit-integer
 
 clean-libslicot-32-without-underscore:
@@ -417,14 +422,14 @@ lib64/Zlib/lib/libz.a: sources/Zlib/64
 
 build-zlib: lib32/Zlib/lib/libz.a lib64/Zlib/lib/libz.a
 
-clean-zlib: clean-zlib-32 clean-zlib-64
+clean-zlib-src: clean-zlib-32-src clean-zlib-64-src
 
 clean-libzlib: clean-libzlib-32 clean-libzlib-64
 
 clean-zlib-tar:
 	rm -f zlib-${ZLIB_VERSION}.tar.xz
 
-cleanall-zlib: clean-zlib clean-zlib-tar
+clean-zlib-all: clean-zlib-src clean-zlib-tar clean-libzlib
 
 clean-libzlib-32:
 	rm -rf lib32/Zlib
@@ -432,8 +437,8 @@ clean-libzlib-32:
 clean-libzlib-64:
 	rm -rf lib64/Zlib
 
-clean-zlib-32:
+clean-zlib-32-src:
 	rm -rf sources/Zlib/32
 
-clean-zlib-64:
+clean-zlib-64-src:
 	rm -rf sources/Zlib/64
