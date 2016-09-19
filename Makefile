@@ -222,36 +222,51 @@ clean-lapack-64:
 # matIO
 #
 
-sources/matIO: matio-${MATIO_VERSION}.tar.gz
-	rm -rf sources/matIO
-	tar -zxf matio-${MATIO_VERSION}.tar.gz
-	mkdir -p sources/matIO
-	mv matio-${MATIO_VERSION}/* sources/matIO
-	rm -r matio-${MATIO_VERSION}
+sources/matIO/32: matio-${MATIO_VERSION}.tar.gz
+	mkdir -p tmp-matio-32
+	tar -zxf matio-${MATIO_VERSION}.tar.gz --directory tmp-matio-32
+	mkdir -p sources/matIO/32
+	mv tmp-matio-32/matio-${MATIO_VERSION}/* sources/matIO/32
+	rm -rf tmp-matio-32
+
+sources/matIO/64: matio-${MATIO_VERSION}.tar.gz
+	mkdir -p tmp-matio-64
+	tar -zxf matio-${MATIO_VERSION}.tar.gz --directory tmp-matio-64
+	mkdir -p sources/matIO/64
+	mv tmp-matio-64/matio-${MATIO_VERSION}/* sources/matIO/64
+	rm -rf tmp-matio-64
 
 matio-${MATIO_VERSION}.tar.gz: versions/matio.version
-	rm -f matio-${MATIO_VERSION}.tar.gz
 	wget https://sourceforge.net/projects/matio/files/matio/${MATIO_VERSION}/matio-${MATIO_VERSION}.tar.gz/download -O matio-${MATIO_VERSION}.tar.gz
 	touch matio-${MATIO_VERSION}.tar.gz
 
-clean-matio:
-	rm -r sources/matIO
+lib32/matIO/lib/libmatio.a: sources/matIO/32 lib32/Zlib/lib/libz.a
+	cd sources/matIO/32 && CROSS_PREFIX=i686-w64-mingw32- ./configure --disable-shared --with-zlib=${ROOT_PATH}/lib32/Zlib --prefix=${ROOT_PATH}/lib32/matIO && make install
+
+lib64/matIO/lib/libmatio.a: sources/matIO/64 lib64/Zlib/lib/libz.a
+	cd sources/matIO/64 && CROSS_PREFIX=x86_64-w64-mingw32- ./configure --disable-shared --with-zlib=${ROOT_PATH}/lib64/Zlib --prefix=${ROOT_PATH}/lib64/matIO && make install
+
+build-matio: build-zlib lib32/matIO/lib/libmatio.a lib64/matIO/lib/libmatio.a
+
+clean-matio: clean-matio-32 clean-matio-64
+
+clean-libmatio: clean-libmatio-32 clean-libmatio-64
 
 clean-matio-tar:
 	rm -f matio-${MATIO_VERSION}.tar.gz
 
 cleanall-matio: clean-matio clean-matio-tar
 
-lib32/matIO/lib/libmatio.a: sources/matIO lib32/Zlib/lib/libz.a
-	cd sources/matIO && CROSS_PREFIX=i686-w64-mingw32- ./configure --disable-shared --with-zlib=${ROOT_PATH}/lib32/Zlib --prefix=${ROOT_PATH}/lib32/matIO && make install
-
-lib64/matIO/lib/libmatio.a: sources/matIO lib64/Zlib/lib/libz.a
-	cd sources/matIO && CROSS_PREFIX=x86_64-w64-mingw32- ./configure --disable-shared --with-zlib=${ROOT_PATH}/lib64/Zlib --prefix=${ROOT_PATH}/lib64/matIO && make install
-
 clean-matio-32:
-	rm -rf lib32/matIO
+	rm -rf sources/matIO/32
 
 clean-matio-64:
+	rm -rf sources/matIO/64
+
+clean-libmatio-32:
+	rm -rf lib32/matIO
+
+clean-libmatio-64:
 	rm -rf lib64/matIO
 
 #
@@ -316,34 +331,49 @@ clean-slicot-64:
 # Zlib
 #
 
-sources/Zlib: zlib-${ZLIB_VERSION}.tar.xz
-	rm -rf sources/Zlib
-	tar -xJf zlib-${ZLIB_VERSION}.tar.xz
-	mkdir -p sources/Zlib
-	mv zlib-${ZLIB_VERSION}/* sources/Zlib
-	rm -r zlib-${ZLIB_VERSION}
+sources/Zlib/32: zlib-${ZLIB_VERSION}.tar.xz
+	mkdir -p tmp-zlib-32
+	tar -xJf zlib-${ZLIB_VERSION}.tar.xz --directory tmp-zlib-32
+	mkdir -p sources/Zlib/32
+	mv tmp-zlib-32/zlib-${ZLIB_VERSION}/* sources/Zlib/32
+	rm -rf tmp-zlib-32
+
+sources/Zlib/64: zlib-${ZLIB_VERSION}.tar.xz
+	mkdir -p tmp-zlib-64
+	tar -xJf zlib-${ZLIB_VERSION}.tar.xz --directory tmp-zlib-64
+	mkdir -p sources/Zlib/64
+	mv tmp-zlib-64/zlib-${ZLIB_VERSION}/* sources/Zlib/64
+	rm -rf tmp-zlib-64
 
 zlib-${ZLIB_VERSION}.tar.xz: versions/zlib.version
-	rm -f zlib-${ZLIB_VERSION}.tar.xz
 	wget https://sourceforge.net/projects/libpng/files/zlib/${ZLIB_VERSION}/zlib-${ZLIB_VERSION}.tar.xz/download -O zlib-${ZLIB_VERSION}.tar.xz
 	touch zlib-${ZLIB_VERSION}.tar.xz
 
-clean-zlib:
-	rm -r sources/Zlib
+lib32/Zlib/lib/libz.a: sources/Zlib/32
+	cd sources/Zlib/32 && CROSS_PREFIX=i686-w64-mingw32- ./configure --static --prefix=${ROOT_PATH}/lib32/Zlib && make install
+
+lib64/Zlib/lib/libz.a: sources/Zlib/64
+	cd sources/Zlib/64 && CROSS_PREFIX=x86_64-w64-mingw32- ./configure --static --prefix=${ROOT_PATH}/lib64/Zlib && make install
+
+build-zlib: lib32/Zlib/lib/libz.a lib64/Zlib/lib/libz.a
+
+clean-zlib: clean-zlib-32 clean-zlib-64
+
+clean-libzlib: clean-libzlib-32 clean-libzlib-64
 
 clean-zlib-tar:
 	rm -f zlib-${ZLIB_VERSION}.tar.xz
 
 cleanall-zlib: clean-zlib clean-zlib-tar
 
-lib32/Zlib/lib/libz.a: sources/Zlib
-	cd sources/Zlib && CROSS_PREFIX=i686-w64-mingw32- ./configure --static --prefix=${ROOT_PATH}/lib32/Zlib && make install
-
-lib64/Zlib/lib/libz.a: sources/Zlib
-	cd sources/Zlib && CROSS_PREFIX=x86_64-w64-mingw32- ./configure --static --prefix=${ROOT_PATH}/lib64/Zlib && make install
-
-clean-zlib-32:
+clean-libzlib-32:
 	rm -rf lib32/Zlib
 
-clean-zlib-64:
+clean-libzlib-64:
 	rm -rf lib64/Zlib
+
+clean-zlib-32:
+	rm -rf sources/Zlib/32
+
+clean-zlib-64:
+	rm -rf sources/Zlib/64
