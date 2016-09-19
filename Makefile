@@ -98,8 +98,18 @@ boost_${BOOST_VERSION}.tar.bz2: versions/boost.version
 	wget https://sourceforge.net/projects/boost/files/boost/`echo "${BOOST_VERSION}" | sed -e 's/_/./g'`/boost_${BOOST_VERSION}.tar.bz2/download -O boost_${BOOST_VERSION}.tar.bz2
 	touch boost_${BOOST_VERSION}.tar.bz2
 
+build-boost: sources/Boost
+	mkdir -p lib32/Boost/include
+	mkdir -p lib64/Boost/include
+	ln -s ${ROOT_PATH}/sources/Boost/boost ${ROOT_PATH}/lib32/Boost/include/boost
+	ln -s ${ROOT_PATH}/sources/Boost/boost ${ROOT_PATH}/lib64/Boost/include/boost
+
 clean-boost:
 	rm -fr sources/Boost
+
+clean-libboost:
+	rm -fr lib32/Boost
+	rm -fr lib64/Boost
 
 clean-boost-tar:
 	rm -f boost_${BOOST_VERSION}.tar.bz2
