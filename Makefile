@@ -161,47 +161,62 @@ clean-libgsl-64:
 # Lapack
 #
 
-sources/Lapack: lapack-${LAPACK_VERSION}.tgz
-	rm -rf sources/Lapack
-	tar -zxf lapack-${LAPACK_VERSION}.tgz
-	mkdir -p sources/Lapack
-	mv lapack-${LAPACK_VERSION}/* sources/Lapack
-	rm -r lapack-${LAPACK_VERSION}
+sources/Lapack/32: lapack-${LAPACK_VERSION}.tgz
+	mkdir -p tmp-lapack-32
+	tar -zxf lapack-${LAPACK_VERSION}.tgz --directory tmp-lapack-32
+	mkdir -p sources/Lapack/32
+	mv tmp-lapack-32/lapack-${LAPACK_VERSION}/* sources/Lapack/32
+	rm -rf tmp-lapack-32
+
+sources/Lapack/64: lapack-${LAPACK_VERSION}.tgz
+	mkdir -p tmp-lapack-64
+	tar -zxf lapack-${LAPACK_VERSION}.tgz --directory tmp-lapack-64
+	mkdir -p sources/Lapack/64
+	mv tmp-lapack-64/lapack-${LAPACK_VERSION}/* sources/Lapack/64
+	rm -rf tmp-lapack-64
 
 lapack-${LAPACK_VERSION}.tgz: versions/lapack.version
-	rm -f lapack-${LAPACK_VERSION}.tgz
 	wget http://www.netlib.org/lapack/lapack-${LAPACK_VERSION}.tgz
 	touch lapack-${LAPACK_VERSION}.tgz
 
-clean-lapack:
-	rm -rf sources/Lapack
+lib32/Lapack/liblapack.a: sources/Lapack/32
+	cp sources/Lapack/32/make.inc.example sources/Lapack/32/make.inc
+	patch sources/Lapack/32/make.inc < patch/lapack-w32.patch
+	make -C sources/Lapack/32/SRC
+	i686-w64-mingw32-strip --strip-debug sources/Lapack/32/liblapack.a
+	mkdir -p lib32/Lapack
+	mv sources/Lapack/32/liblapack.a lib32/Lapack/liblapack.a
+
+lib64/Lapack/liblapack.a: sources/Lapack/64
+	cp sources/Lapack/64/make.inc.example sources/Lapack/64/make.inc
+	patch sources/Lapack/64/make.inc < patch/lapack-w64.patch
+	make -C sources/Lapack/64/SRC
+	x86_64-w64-mingw32-strip --strip-debug sources/Lapack/64/liblapack.a
+	mkdir -p lib64/Lapack
+	mv sources/Lapack/64/liblapack.a lib64/Lapack/liblapack.a
+
+build-lapack: lib32/Lapack/liblapack.a lib64/Lapack/liblapack.a
+
+clean-lapack: clean-lapack-32 clean-lapack-64
+
+clean-liblapack: clean-liblapack-32 clean-liblapack-64
 
 clean-lapack-tar:
 	rm -f lapack-${LAPACK_VERSION}.tgz
 
 cleanall-lapack: clean-lapack clean-lapack-tar
 
-lib32/Lapack/liblapack.a: sources/Lapack
-	cp sources/Lapack/make.inc.example sources/Lapack/make.inc
-	patch sources/Lapack/make.inc < patch/lapack-w32.patch
-	make -C sources/Lapack/SRC
-	i686-w64-mingw32-strip --strip-debug sources/Lapack/liblapack.a
-	mkdir -p lib32/Lapack
-	mv sources/Lapack/liblapack.a lib32/Lapack/liblapack.a
-
-lib64/Lapack/liblapack.a: sources/Lapack
-	cp sources/Lapack/make.inc.example sources/Lapack/make.inc
-	patch sources/Lapack/make.inc < patch/lapack-w64.patch
-	make -C sources/Lapack/SRC
-	x86_64-w64-mingw32-strip --strip-debug sources/Lapack/liblapack.a
-	mkdir -p lib64/Lapack
-	mv sources/Lapack/liblapack.a lib64/Lapack/liblapack.a
-
-clean-lapack-32:
+clean-liblapack-32:
 	rm -rf lib32/Lapack
 
-clean-lapack-64:
+clean-liblapack-64:
 	rm -rf lib64/Lapack
+
+clean-lapack-32:
+	rm -rf sources/Lapack/32
+
+clean-lapack-64:
+	rm -rf sources/Lapack/64
 
 #
 # matIO
