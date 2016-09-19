@@ -273,58 +273,96 @@ clean-libmatio-64:
 # Slicot
 #
 
-sources/Slicot: slicot45.tar.gz
-	rm -rf sources/Slicot
-	tar -zxf slicot45.tar.gz
-	mkdir -p sources/Slicot
-	mv slicot/* sources/Slicot
-	rm -r slicot
+sources/Slicot/32/without-underscore: slicot45.tar.gz
+	mkdir -p tmp-slicot-32-without-underscore
+	tar -zxf slicot45.tar.gz --directory tmp-slicot-32-without-underscore
+	mkdir -p sources/Slicot/32/without-underscore
+	mv tmp-slicot-32-without-underscore/slicot/* sources/Slicot/32/without-underscore
+	rm -r tmp-slicot-32-without-underscore
+
+sources/Slicot/32/with-underscore: slicot45.tar.gz
+	mkdir -p tmp-slicot-32-with-underscore
+	tar -zxf slicot45.tar.gz --directory tmp-slicot-32-with-underscore
+	mkdir -p sources/Slicot/32/with-underscore
+	mv tmp-slicot-32-with-underscore/slicot/* sources/Slicot/32/with-underscore
+	rm -r tmp-slicot-32-with-underscore
+
+sources/Slicot/64/with-32bit-integer: slicot45.tar.gz
+	mkdir -p tmp-slicot-64-with-32bit-integer
+	tar -zxf slicot45.tar.gz --directory tmp-slicot-64-with-32bit-integer
+	mkdir -p sources/Slicot/64/with-32bit-integer
+	mv tmp-slicot-64-with-32bit-integer/slicot/* sources/Slicot/64/with-32bit-integer
+	rm -r tmp-slicot-64-with-32bit-integer
+
+sources/Slicot/64/with-64bit-integer: slicot45.tar.gz
+	mkdir -p tmp-slicot-64-with-64bit-integer
+	tar -zxf slicot45.tar.gz --directory tmp-slicot-64-with-64bit-integer
+	mkdir -p sources/Slicot/64/with-64bit-integer
+	mv tmp-slicot-64-with-64bit-integer/slicot/* sources/Slicot/64/with-64bit-integer
+	rm -r tmp-slicot-64-with-64bit-integer
 
 slicot45.tar.gz:
-	rm -f slicot45.tar.gz
 	wget --user-agent="User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0) Gecko/20100101 Firefox/10.0" -c http://slicot.org/objects/software/shared/slicot45.tar.gz
 	touch slicot45.tar.gz
 
-clean-slicot:
-	rm -rf sources/Slicot
+lib32/Slicot/without-underscore/libslicot_pic.a: sources/Slicot/32/without-underscore
+	patch sources/Slicot/32/without-underscore/make.inc < patch/slicot-32-without-underscore.patch
+	make -C sources/Slicot/32/without-underscore lib
+	i686-w64-mingw32-strip --strip-debug sources/Slicot//32/without-underscore/libslicot_pic.a
+	mkdir -p lib32/Slicot/without-underscore
+	mv sources/Slicot/32/without-underscore/libslicot_pic.a lib32/Slicot/without-underscore/libslicot_pic.a
+
+lib32/Slicot/with-underscore/libslicot_pic.a: sources/Slicot/32/with-underscore
+	patch sources/Slicot/32/with-underscore/make.inc < patch/slicot-32-with-underscore.patch
+	make -C sources/Slicot/32/with-underscore lib
+	i686-w64-mingw32-strip --strip-debug sources/Slicot/32/with-underscore/libslicot_pic.a
+	mkdir -p lib32/Slicot/with-underscore
+	mv sources/Slicot/32/with-underscore/libslicot_pic.a lib32/Slicot/with-underscore/libslicot_pic.a
+
+lib64/Slicot/libslicot_pic.a: sources/Slicot/64/with-32bit-integer
+	patch sources/Slicot/64/with-32bit-integer/make.inc < patch/slicot-64-with-32bit-integer.patch
+	make -C sources/Slicot/64/with-32bit-integer lib
+	x86_64-w64-mingw32-strip --strip-debug sources/Slicot/64/with-32bit-integer/libslicot_pic.a
+	mkdir -p lib64/Slicot
+	mv sources/Slicot/64/with-32bit-integer/libslicot_pic.a lib64/Slicot/libslicot_pic.a
+
+lib64/Slicot/libslicot64_pic.a: sources/Slicot/64/with-64bit-integer
+	patch sources/Slicot/64/with-64bit-integer/make.inc < patch/slicot-64-with-64bit-integer.patch
+	make -C sources/Slicot/64/with-64bit-integer lib
+	x86_64-w64-mingw32-strip --strip-debug sources/Slicot/64/with-64bit-integer/libslicot64_pic.a
+	mkdir -p lib64/Slicot
+	mv sources/Slicot/64/with-64bit-integer/libslicot64_pic.a lib64/Slicot/libslicot64_pic.a
+
+build-slicot: lib32/Slicot/without-underscore/libslicot_pic.a lib32/Slicot/with-underscore/libslicot_pic.a lib64/Slicot/libslicot_pic.a lib64/Slicot/libslicot64_pic.a
+
+clean-slicot: clean-slicot-32-with-underscore clean-slicot-32-without-underscore clean-slicot-64-with-32bit-integer clean-slicot-64-with-64bit-integer
+
+clean-libslicot: clean-libslicot-32-without-underscore clean-libslicot-32-with-underscore clean-libslicot-64
 
 clean-slicot-tar:
 	rm -f slicot45.tar.gz
 
 cleanall-slicot: clean-slicot clean-slicot-tar
 
-lib32/Slicot/without-underscore/libslicot_pic.a:
-	patch sources/Slicot/make.inc < patch/slicot-32-without-underscore.patch
-	make -C sources/Slicot lib
-	i686-w64-mingw32-strip --strip-debug sources/Slicot/libslicot_pic.a
-	mkdir -p lib32/Slicot/without-underscore
-	mv sources/Slicot/libslicot_pic.a lib32/Slicot/without-underscore/libslicot_pic.a
+clean-slicot-32-with-underscore:
+	rm -rf sources/Slicot/32/with-underscore
 
-lib32/Slicot/with-underscore/libslicot_pic.a:
-	patch sources/Slicot/make.inc < patch/slicot-32-with-underscore.patch
-	make -C sources/Slicot lib
-	i686-w64-mingw32-strip --strip-debug sources/Slicot/libslicot_pic.a
-	mkdir -p lib32/Slicot/with-underscore
-	mv sources/Slicot/libslicot_pic.a lib32/Slicot/with-underscore/libslicot_pic.a
+clean-slicot-32-without-underscore:
+	rm -rf sources/Slicot/32/without-underscore
 
-lib64/Slicot/libslicot_pic.a:
-	patch sources/Slicot/make.inc < patch/slicot-64-with-32bit-integer.patch
-	make -C sources/Slicot lib
-	x86_64-w64-mingw32-strip --strip-debug sources/Slicot/libslicot_pic.a
-	mkdir -p lib64/Slicot
-	mv sources/Slicot/libslicot_pic.a lib64/Slicot/libslicot_pic.a
+clean-slicot-64-with-32bit-integer:
+	rm -rf sources/Slicot/64/with-32bit-integer
 
-lib64/Slicot/libslicot64_pic.a:
-	patch sources/Slicot/make.inc < patch/slicot-64-with-64bit-integer.patch
-	make -C sources/Slicot lib
-	x86_64-w64-mingw32-strip --strip-debug sources/Slicot/libslicot64_pic.a
-	mkdir -p lib64/Slicot
-	mv sources/Slicot/libslicot64_pic.a lib64/Slicot/libslicot64_pic.a
+clean-slicot-64-with-64bit-integer:
+	rm -rf sources/Slicot/64/with-64bit-integer
 
-clean-slicot-32:
-	rm -rf lib32/Slicot
+clean-libslicot-32-without-underscore:
+	rm -rf lib32/Slicot/without-underscore
 
-clean-slicot-64:
+clean-libslicot-32-with-underscore:
+	rm -rf lib32/Slicot/with-underscore
+
+clean-libslicot-64:
 	rm -rf lib64/Slicot
 
 #
