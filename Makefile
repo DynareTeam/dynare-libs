@@ -157,7 +157,7 @@ lib64/Gsl/lib/libgsl.a: sources/Gsl/64
 
 build-gsl: lib32/Gsl/lib/libgsl.a lib64/Gsl/lib/libgsl.a
 
-clean-gsl-src: clean-gsl-32-src clean-64-src
+clean-gsl-src: clean-gsl-32-src clean-gsl-64-src
 
 clean-libgsl: clean-libgsl-32 clean-libgsl-64
 
