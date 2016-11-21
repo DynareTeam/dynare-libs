@@ -9,5 +9,5 @@
 
 ## Requirements
 ```bash
-~$ sudo apt-get install mingw-w64
+~$ sudo apt-get install mingw-w64 nsis
 ```
