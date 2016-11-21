@@ -15,7 +15,8 @@ ROOT_PATH = $(realpath .)
 	clean-matio-scr clean-matio-tar clean-matio-all clean-libmatio\
 	clean-zlib-scr clean-zlib-tar clean-zlib-scr clean-libzlib\
 	clean-lapack-scr clean-lapack-tar clean-lapack-all clean-liblapack\
-	download build clean-src clean-all clean-lib clean-tar
+	download build clean-src clean-all clean-lib clean-tar \
+	install-matlab-files
 
 download: sources/OpenBLAS/32 sources/OpenBLAS/64 \
 	sources/Boost sources/Gsl \
@@ -23,7 +24,8 @@ download: sources/OpenBLAS/32 sources/OpenBLAS/64 \
 	sources/matIO \
 	sources/Slicot \
 	sources/Zlib \
-	octave/windows/32/bin/octave.exe octave/windows/64/bin/octave.exe
+	octave/windows/32/bin/octave.exe octave/windows/64/bin/octave.exe \
+	install-matlab-files
 
 build: build-openblas build-lapack build-slicot build-matio build-boost build-gsl
 
@@ -489,3 +491,31 @@ octave/windows/64/bin/octave.exe: octave/windows/installers/octave-${OCTAVE_VERS
 	@cd octave/windows/64 && 7z x octave-${OCTAVE_VERSION}-w64-installer.exe > /dev/null
 	@rm octave/windows/64/octave-${OCTAVE_VERSION}-w64-installer.exe
 	@touch octave/windows/64/bin/octave.exe
+
+#
+# Matlab
+#
+
+matlab32.tar.xz:
+	@wget -q -o /dev/null http://www.dynare.org/matlab/matlab32.tar.xz.gpg -O matlab32.tar.xz.gpg
+	@gpg --output matlab32.tar.xz --decrypt matlab32.tar.xz.gpg
+	@rm matlab32.tar.xz.gpg
+	@touch matlab32.tar.xz
+
+matlab64.tar.xz:
+	@wget  -q -o /dev/null http://www.dynare.org/matlab/matlab64.tar.xz.gpg -O matlab64.tar.xz.gpg
+	@gpg --output matlab64.tar.xz --decrypt matlab64.tar.xz.gpg
+	@rm matlab64.tar.xz.gpg
+	@touch matlab64.tar.xz
+
+lib32/matlab/R2007a/bin/matlab.bat: matlab32.tar.xz
+	@tar xJf matlab32.tar.xz -C lib32
+	@mv lib32/32 lib32/matlab
+	@touch lib32/matlab/R2007a/bin/matlab.bat
+
+lib64/matlab/R2007a/bin/win64/matlab.exe: matlab64.tar.xz
+	@tar xJf matlab64.tar.xz -C lib64
+	@mv lib64/64 lib64/matlab
+	@touch lib64/matlab/R2007a/bin/win64/matlab.exe
+
+install-matlab-files: lib32/matlab/R2007a/bin/matlab.bat lib64/matlab/R2007a/bin/win64/matlab.exe
