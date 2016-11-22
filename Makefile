@@ -16,6 +16,7 @@ ROOT_PATH = $(realpath .)
 	clean-zlib-scr clean-zlib-tar clean-zlib-scr clean-libzlib\
 	clean-lapack-scr clean-lapack-tar clean-lapack-all clean-liblapack\
 	download build clean-src clean-all clean-lib clean-tar \
+	octave-libs \
 	install-matlab-files
 
 download: sources/OpenBLAS/32 sources/OpenBLAS/64 \
@@ -24,7 +25,7 @@ download: sources/OpenBLAS/32 sources/OpenBLAS/64 \
 	sources/matIO \
 	sources/Slicot \
 	sources/Zlib \
-	octave/windows/32/bin/octave.exe octave/windows/64/bin/octave.exe \
+	octave-libs \
 	install-matlab-files
 
 build: build-openblas build-lapack build-slicot build-matio build-boost build-gsl
@@ -456,41 +457,41 @@ clean-zlib-64-src:
 # Octave
 #
 
-octave/windows/installers/octave-${OCTAVE_VERSION}-w32-installer.exe: versions/octave.version
+octave-${OCTAVE_VERSION}-w32-installer.exe: versions/octave.version
 	@echo "Download octave-${OCTAVE_VERSION}-w32-installer.exe from https://ftp.gnu.org/gnu/octave/windows ..."
-	@cd octave/windows/installers && \
-	wget -q -o /dev/null https://ftp.gnu.org/gnu/octave/windows/octave-${OCTAVE_VERSION}-w32-installer.exe -O octave-${OCTAVE_VERSION}-w32-installer.exe
+	@wget -q -o /dev/null https://ftp.gnu.org/gnu/octave/windows/octave-${OCTAVE_VERSION}-w32-installer.exe -O octave-${OCTAVE_VERSION}-w32-installer.exe
 	@echo "Download octave-${OCTAVE_VERSION}-w32-installer.exe.sig from https://ftp.gnu.org/gnu/octave/windows ..."
-	@cd octave/windows/installers && \
-	wget -q -o /dev/null https://ftp.gnu.org/gnu/octave/windows/octave-${OCTAVE_VERSION}-w32-installer.exe.sig -O octave-${OCTAVE_VERSION}-w32-installer.exe.sig
-	gpg --verify octave/windows/installers/octave-${OCTAVE_VERSION}-w32-installer.exe.sig octave/windows/installers/octave-${OCTAVE_VERSION}-w32-installer.exe
-	touch octave/windows/installers/octave-${OCTAVE_VERSION}-w32-installer.exe.sig
-	touch octave/windows/installers/octave-${OCTAVE_VERSION}-w32-installer.exe
+	@wget -q -o /dev/null https://ftp.gnu.org/gnu/octave/windows/octave-${OCTAVE_VERSION}-w32-installer.exe.sig -O octave-${OCTAVE_VERSION}-w32-installer.exe.sig
+	gpg --verify octave-${OCTAVE_VERSION}-w32-installer.exe.sig octave-${OCTAVE_VERSION}-w32-installer.exe
+	@touch octave-${OCTAVE_VERSION}-w32-installer.exe.sig
+	@touch octave-${OCTAVE_VERSION}-w32-installer.exe
 
-octave/windows/installers/octave-${OCTAVE_VERSION}-w64-installer.exe: versions/octave.version
+octave-${OCTAVE_VERSION}-w64-installer.exe: versions/octave.version
 	@echo "Download octave-${OCTAVE_VERSION}-w64-installer.exe from https://ftp.gnu.org/gnu/octave/windows ..."
-	@cd octave/windows/installers && \
-	wget -q -o /dev/null https://ftp.gnu.org/gnu/octave/windows/octave-${OCTAVE_VERSION}-w64-installer.exe -O octave-${OCTAVE_VERSION}-w64-installer.exe
+	@wget -q -o /dev/null https://ftp.gnu.org/gnu/octave/windows/octave-${OCTAVE_VERSION}-w64-installer.exe -O octave-${OCTAVE_VERSION}-w64-installer.exe
 	@echo "Download octave-${OCTAVE_VERSION}-w64-installer.exe.sig from https://ftp.gnu.org/gnu/octave/windows ..."
-	@cd octave/windows/installers && \
-	wget -q -o /dev/null https://ftp.gnu.org/gnu/octave/windows/octave-${OCTAVE_VERSION}-w64-installer.exe.sig -O octave-${OCTAVE_VERSION}-w64-installer.exe.sig
-	gpg --verify octave/windows/installers/octave-${OCTAVE_VERSION}-w64-installer.exe.sig octave/windows/installers/octave-${OCTAVE_VERSION}-w64-installer.exe
-	touch octave/windows/installers/octave-${OCTAVE_VERSION}-w64-installer.exe.sig
-	touch octave/windows/installers/octave-${OCTAVE_VERSION}-w64-installer.exe
+	@wget -q -o /dev/null https://ftp.gnu.org/gnu/octave/windows/octave-${OCTAVE_VERSION}-w64-installer.exe.sig -O octave-${OCTAVE_VERSION}-w64-installer.exe.sig
+	gpg --verify octave-${OCTAVE_VERSION}-w64-installer.exe.sig octave-${OCTAVE_VERSION}-w64-installer.exe
+	@touch octave-${OCTAVE_VERSION}-w64-installer.exe.sig
+	@touch octave-${OCTAVE_VERSION}-w64-installer.exe
 
-octave/windows/32/bin/octave.exe: octave/windows/installers/octave-${OCTAVE_VERSION}-w32-installer.exe
+lib32/octave/bin/octave.exe: octave-${OCTAVE_VERSION}-w32-installer.exe
 	@echo "Unarchive Octave 32bits..."
-	@cp octave/windows/installers/octave-${OCTAVE_VERSION}-w32-installer.exe octave/windows/32
-	@cd octave/windows/32 && 7z x octave-${OCTAVE_VERSION}-w32-installer.exe > /dev/null
-	@rm octave/windows/32/octave-${OCTAVE_VERSION}-w32-installer.exe
-	@touch octave/windows/32/bin/octave.exe
+	@mkdir -p lib32/octave
+	@cp octave-${OCTAVE_VERSION}-w32-installer.exe lib32/octave
+	@cd lib32/octave && 7z x octave-${OCTAVE_VERSION}-w32-installer.exe > /dev/null
+	@rm lib32/octave/octave-${OCTAVE_VERSION}-w32-installer.exe
+	@touch lib32/octave/bin/octave.exe
 
-octave/windows/64/bin/octave.exe: octave/windows/installers/octave-${OCTAVE_VERSION}-w64-installer.exe
+lib64/octave/bin/octave.exe: octave-${OCTAVE_VERSION}-w64-installer.exe
 	@echo "Unarchive Octave 64bits..."
-	@cp octave/windows/installers/octave-${OCTAVE_VERSION}-w64-installer.exe octave/windows/64
-	@cd octave/windows/64 && 7z x octave-${OCTAVE_VERSION}-w64-installer.exe > /dev/null
-	@rm octave/windows/64/octave-${OCTAVE_VERSION}-w64-installer.exe
-	@touch octave/windows/64/bin/octave.exe
+	@mkdir -p lib64/octave
+	@cp octave-${OCTAVE_VERSION}-w64-installer.exe lib64/octave
+	@cd lib64/octave && 7z x octave-${OCTAVE_VERSION}-w64-installer.exe > /dev/null
+	@rm lib64/octave/octave-${OCTAVE_VERSION}-w64-installer.exe
+	@touch lib64/octave/bin/octave.exe
+
+octave-libs: lib32/octave/bin/octave.exe lib64/octave/bin/octave.exe
 
 #
 # Matlab

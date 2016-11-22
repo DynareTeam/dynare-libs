@@ -2,3 +2,5 @@
 *.tar.gz
 *.tar.xz
 *.tgz
+*.exe
+*.exe.sig
