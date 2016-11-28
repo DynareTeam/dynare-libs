@@ -274,10 +274,16 @@ matio-${MATIO_VERSION}.tar.gz: versions/matio.version
 	touch matio-${MATIO_VERSION}.tar.gz
 
 lib32/matIO/lib/libmatio.a: sources/matIO/32 lib32/Zlib/lib/libz.a
-	cd sources/matIO/32 && CROSS_PREFIX=i686-w64-mingw32- ./configure --disable-shared --with-zlib=${ROOT_PATH}/lib32/Zlib --prefix=${ROOT_PATH}/lib32/matIO && make install
+	cd sources/matIO/32 && ./configure --build=i686-w64-mingw32 --disable-shared --with-zlib=${ROOT_PATH}/lib32/Zlib --prefix=${ROOT_PATH}/lib32/matIO && make install
+	ln -s ${ROOT_PATH}/lib32/Zlib/include/zconf.h ${ROOT_PATH}/lib32/matIO/include/zconf.h
+	ln -s ${ROOT_PATH}/lib32/Zlib/include/zlib.h ${ROOT_PATH}/lib32/matIO/include/zlib.h
+	ln -s ${ROOT_PATH}/lib32/Zlib/lib/libz.a ${ROOT_PATH}/lib32/matIO/lib/libz.a
 
 lib64/matIO/lib/libmatio.a: sources/matIO/64 lib64/Zlib/lib/libz.a
-	cd sources/matIO/64 && CROSS_PREFIX=x86_64-w64-mingw32- ./configure --disable-shared --with-zlib=${ROOT_PATH}/lib64/Zlib --prefix=${ROOT_PATH}/lib64/matIO && make install
+	cd sources/matIO/64 && ./configure --build=x86_64-w64-mingw32 --disable-shared --with-zlib=${ROOT_PATH}/lib64/Zlib --prefix=${ROOT_PATH}/lib64/matIO && make install
+	ln -s ${ROOT_PATH}/lib64/Zlib/include/zconf.h ${ROOT_PATH}/lib64/matIO/include/zconf.h
+	ln -s ${ROOT_PATH}/lib64/Zlib/include/zlib.h ${ROOT_PATH}/lib64/matIO/include/zlib.h
+	ln -s ${ROOT_PATH}/lib64/Zlib/lib/libz.a ${ROOT_PATH}/lib64/matIO/lib/libz.a
 
 build-matio: build-zlib lib32/matIO/lib/libmatio.a lib64/matIO/lib/libmatio.a
 
