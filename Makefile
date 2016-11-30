@@ -344,39 +344,39 @@ slicot45.tar.gz:
 	wget --user-agent="User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0) Gecko/20100101 Firefox/10.0" -c http://slicot.org/objects/software/shared/slicot45.tar.gz
 	touch slicot45.tar.gz
 
-lib32/Slicot/without-underscore/libslicot_pic.a: sources/Slicot/32/without-underscore
+lib32/Slicot/without-underscore/lib/libslicot_pic.a: sources/Slicot/32/without-underscore
 	patch sources/Slicot/32/without-underscore/make.inc < patch/slicot-32-without-underscore.patch
 	make -C sources/Slicot/32/without-underscore lib
 	i686-w64-mingw32-strip --strip-debug sources/Slicot//32/without-underscore/libslicot_pic.a
-	mkdir -p lib32/Slicot/without-underscore
-	mv sources/Slicot/32/without-underscore/libslicot_pic.a lib32/Slicot/without-underscore/libslicot_pic.a
-	touch lib32/Slicot/without-underscore/libslicot_pic.a
+	mkdir -p lib32/Slicot/without-underscore/lib
+	mv sources/Slicot/32/without-underscore/libslicot_pic.a lib32/Slicot/without-underscore/lib/libslicot_pic.a
+	touch lib32/Slicot/without-underscore/lib/libslicot_pic.a
 
-lib32/Slicot/with-underscore/libslicot_pic.a: sources/Slicot/32/with-underscore
+lib32/Slicot/with-underscore/lib/libslicot_pic.a: sources/Slicot/32/with-underscore
 	patch sources/Slicot/32/with-underscore/make.inc < patch/slicot-32-with-underscore.patch
 	make -C sources/Slicot/32/with-underscore lib
 	i686-w64-mingw32-strip --strip-debug sources/Slicot/32/with-underscore/libslicot_pic.a
-	mkdir -p lib32/Slicot/with-underscore
-	mv sources/Slicot/32/with-underscore/libslicot_pic.a lib32/Slicot/with-underscore/libslicot_pic.a
-	touch lib32/Slicot/with-underscore/libslicot_pic.a
+	mkdir -p lib32/Slicot/with-underscore/lib
+	mv sources/Slicot/32/with-underscore/libslicot_pic.a lib32/Slicot/with-underscore/lib/libslicot_pic.a
+	touch lib32/Slicot/with-underscore/lib/libslicot_pic.a
 
-lib64/Slicot/libslicot_pic.a: sources/Slicot/64/with-32bit-integer
+lib64/Slicot/lib/libslicot_pic.a: sources/Slicot/64/with-32bit-integer
 	patch sources/Slicot/64/with-32bit-integer/make.inc < patch/slicot-64-with-32bit-integer.patch
 	make -C sources/Slicot/64/with-32bit-integer lib
 	x86_64-w64-mingw32-strip --strip-debug sources/Slicot/64/with-32bit-integer/libslicot_pic.a
-	mkdir -p lib64/Slicot
-	mv sources/Slicot/64/with-32bit-integer/libslicot_pic.a lib64/Slicot/libslicot_pic.a
-	touch lib64/Slicot/libslicot_pic.a
+	mkdir -p lib64/Slicot/lib
+	mv sources/Slicot/64/with-32bit-integer/libslicot_pic.a lib64/Slicot/lib/libslicot_pic.a
+	touch lib64/Slicot/lib/libslicot_pic.a
 
-lib64/Slicot/libslicot64_pic.a: sources/Slicot/64/with-64bit-integer
+lib64/Slicot/lib/libslicot64_pic.a: sources/Slicot/64/with-64bit-integer
 	patch sources/Slicot/64/with-64bit-integer/make.inc < patch/slicot-64-with-64bit-integer.patch
 	make -C sources/Slicot/64/with-64bit-integer lib
 	x86_64-w64-mingw32-strip --strip-debug sources/Slicot/64/with-64bit-integer/libslicot64_pic.a
-	mkdir -p lib64/Slicot
-	mv sources/Slicot/64/with-64bit-integer/libslicot64_pic.a lib64/Slicot/libslicot64_pic.a
-	touch lib64/Slicot/libslicot64_pic.a
+	mkdir -p lib64/Slicot/lib
+	mv sources/Slicot/64/with-64bit-integer/libslicot64_pic.a lib64/Slicot/lib/libslicot64_pic.a
+	touch lib64/Slicot/lib/libslicot64_pic.a
 
-build-slicot: lib32/Slicot/without-underscore/libslicot_pic.a lib32/Slicot/with-underscore/libslicot_pic.a lib64/Slicot/libslicot_pic.a lib64/Slicot/libslicot64_pic.a
+build-slicot: lib32/Slicot/without-underscore/lib/libslicot_pic.a lib32/Slicot/with-underscore/lib/libslicot_pic.a lib64/Slicot/lib/libslicot_pic.a lib64/Slicot/lib/libslicot64_pic.a
 
 clean-slicot-src: clean-slicot-32-with-underscore-src clean-slicot-32-without-underscore-src clean-slicot-64-with-32bit-integer-src clean-slicot-64-with-64bit-integer-src
 
