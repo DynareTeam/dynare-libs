@@ -12,8 +12,7 @@ set -e
 OCTAVE_VERSION="4.2.0"
 
 # Get path to the mkoctfile shell script 
-THISSCRIPT=$(readlink -f $0)
-MKOCTFILE_PATH=`dirname $SCRIPT`
+MKOCTFILE_PATH=`dirname $(readlink -f $0)`
 OCTAVE_PREFIX=$MKOCTFILE_PATH/octave
 
 DEFAULT_BINDIR="$OCTAVE_PREFIX/bin"
