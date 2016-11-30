@@ -9,11 +9,17 @@ set -e
 
 : ${SED="/bin/sed"}
 
-OCTAVE_VERSION="4.2.0"
-
 # Get path to the mkoctfile shell script 
 MKOCTFILE_PATH=`dirname $(readlink -f $0)`
 OCTAVE_PREFIX=$MKOCTFILE_PATH/octave
+
+# Get absolute path to the root build system directory
+BUILD_SYSTEM_ROOT=$MKOCTFILE_PATH/../
+BUILD_SYSTEM_ROOT=`realpath $BUILD_SYSTEM_ROOT`
+
+# Get Octave version
+current_octave_version=$(head -n 1 $BUILD_SYSTEM_ROOT/versions/octave.version)
+eval $(echo "$current_octave_version" | tr -d '[:space:]')
 
 DEFAULT_BINDIR="$OCTAVE_PREFIX/bin"
 DEFAULT_INCLUDEDIR="$OCTAVE_PREFIX/include"
