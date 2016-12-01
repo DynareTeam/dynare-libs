@@ -65,7 +65,7 @@ fi
 : ${CFLAGS="-g -O2"}
 : ${CPICFLAG=""}
 : ${CXX="x86_64-w64-mingw32-g++"}
-: ${CXXFLAGS="-g -O2"}
+: ${CXXFLAGS="-g -O2 -std=c++11"}
 : ${CXXPICFLAG=""}
 : ${XTRA_CFLAGS=""}
 : ${XTRA_CXXFLAGS=""}
