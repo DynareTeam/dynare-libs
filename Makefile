@@ -504,13 +504,13 @@ octave-libs: lib32/octave/bin/octave.exe lib64/octave/bin/octave.exe
 #
 
 matlab32.tar.xz:
-	@wget -q -o /dev/null http://www.dynare.org/matlab/matlab32.tar.xz.gpg -O matlab32.tar.xz.gpg
+	@wget -q -o /dev/null http://www.dynare.org/dynare-build/matlab32.tar.xz.gpg -O matlab32.tar.xz.gpg
 	@gpg --output matlab32.tar.xz --decrypt matlab32.tar.xz.gpg
 	@rm matlab32.tar.xz.gpg
 	@touch matlab32.tar.xz
 
 matlab64.tar.xz:
-	@wget  -q -o /dev/null http://www.dynare.org/matlab/matlab64.tar.xz.gpg -O matlab64.tar.xz.gpg
+	@wget  -q -o /dev/null http://www.dynare.org/dynare-build/matlab64.tar.xz.gpg -O matlab64.tar.xz.gpg
 	@gpg --output matlab64.tar.xz --decrypt matlab64.tar.xz.gpg
 	@rm matlab64.tar.xz.gpg
 	@touch matlab64.tar.xz
