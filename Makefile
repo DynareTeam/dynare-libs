@@ -19,6 +19,8 @@ ROOT_PATH = $(realpath .)
 	octave-libs \
 	install-matlab-files
 
+build: build-openblas build-lapack build-slicot build-matio build-boost build-gsl
+
 download: sources/OpenBLAS/32 sources/OpenBLAS/64 \
 	sources/Boost \
 	sources/Gsl \
@@ -28,8 +30,6 @@ download: sources/OpenBLAS/32 sources/OpenBLAS/64 \
 	sources/Zlib \
 	octave-libs \
 	install-matlab-files
-
-build: build-openblas build-lapack build-slicot build-matio build-boost build-gsl
 
 clean-lib: clean-libopenblas clean-liblapack clean-libgsl clean-libzlib clean-libmatio clean-libslicot
 
