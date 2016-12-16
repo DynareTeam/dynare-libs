@@ -20,7 +20,8 @@ ROOT_PATH = $(realpath .)
 	install-matlab-files
 
 download: sources/OpenBLAS/32 sources/OpenBLAS/64 \
-	sources/Boost sources/Gsl \
+	sources/Boost \
+	sources/Gsl \
 	sources/Lapack \
 	sources/matIO \
 	sources/Slicot \
@@ -155,6 +156,8 @@ sources/Gsl/64: gsl-${GSL_VERSION}.tar.gz
 	mv tmp-gsl-64/gsl-${GSL_VERSION}/* sources/Gsl/64
 	rm -rf tmp-gsl-64
 
+sources/Gsl: sources/Gsl/32 sources/Gsl/64
+
 gsl-${GSL_VERSION}.tar.gz: versions/gsl.version
 	wget http://fr.mirror.babylon.network/gnu/gsl/gsl-${GSL_VERSION}.tar.gz
 	touch gsl-${GSL_VERSION}.tar.gz
@@ -205,6 +208,8 @@ sources/Lapack/64: lapack-${LAPACK_VERSION}.tgz
 	mkdir -p sources/Lapack/64
 	mv tmp-lapack-64/lapack-${LAPACK_VERSION}/* sources/Lapack/64
 	rm -rf tmp-lapack-64
+
+sources/Lapack: sources/Lapack/32 sources/Lapack/64
 
 lapack-${LAPACK_VERSION}.tgz: versions/lapack.version
 	wget http://www.netlib.org/lapack/lapack-${LAPACK_VERSION}.tgz
@@ -268,6 +273,8 @@ sources/matIO/64: matio-${MATIO_VERSION}.tar.gz
 	mkdir -p sources/matIO/64
 	mv tmp-matio-64/matio-${MATIO_VERSION}/* sources/matIO/64
 	rm -rf tmp-matio-64
+
+sources/matIO: sources/matIO/32 sources/matIO/64
 
 matio-${MATIO_VERSION}.tar.gz: versions/matio.version
 	wget https://sourceforge.net/projects/matio/files/matio/${MATIO_VERSION}/matio-${MATIO_VERSION}.tar.gz/download -O matio-${MATIO_VERSION}.tar.gz
@@ -339,6 +346,8 @@ sources/Slicot/64/with-64bit-integer: slicot45.tar.gz
 	mkdir -p sources/Slicot/64/with-64bit-integer
 	mv tmp-slicot-64-with-64bit-integer/slicot/* sources/Slicot/64/with-64bit-integer
 	rm -r tmp-slicot-64-with-64bit-integer
+
+sources/Slicot: sources/Slicot/32/without-underscore sources/Slicot/32/with-underscore sources/Slicot/64/with-32bit-integer sources/Slicot/64/with-64bit-integer
 
 slicot45.tar.gz:
 	wget --user-agent="User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0) Gecko/20100101 Firefox/10.0" -c http://slicot.org/objects/software/shared/slicot45.tar.gz
@@ -425,6 +434,8 @@ sources/Zlib/64: zlib-${ZLIB_VERSION}.tar.xz
 	mkdir -p sources/Zlib/64
 	mv tmp-zlib-64/zlib-${ZLIB_VERSION}/* sources/Zlib/64
 	rm -rf tmp-zlib-64
+
+sources/Zlib: sources/Zlib/64 sources/Zlib/32
 
 zlib-${ZLIB_VERSION}.tar.xz: versions/zlib.version
 	wget https://sourceforge.net/projects/libpng/files/zlib/${ZLIB_VERSION}/zlib-${ZLIB_VERSION}.tar.xz/download -O zlib-${ZLIB_VERSION}.tar.xz
