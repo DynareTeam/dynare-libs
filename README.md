@@ -10,5 +10,5 @@
 
 ## Requirements
 ```bash
-~$ sudo apt-get install ca-certificates make mingw-w64 gcc xz-utils p7zip-full bzip2 patch git gfortran
+~$ sudo apt-get install ca-certificates make mingw-w64 gcc xz-utils p7zip-full bzip2 patch git gfortran autoconf
 ```
