@@ -17,7 +17,8 @@ ROOT_PATH = $(realpath .)
 	clean-lapack-scr clean-lapack-tar clean-lapack-all clean-liblapack\
 	download build clean-src clean-all clean-lib clean-tar \
 	octave-libs \
-	install-matlab-files
+	install-matlab-files \
+	install
 
 build: build-openblas build-lapack build-slicot build-matio build-boost build-gsl
 
@@ -38,6 +39,9 @@ clean-src: clean-openblas-src clean-boost-src clean-gsl-src clean-lapack-src cle
 clean-tar: clean-openblas-tar clean-boost-tar clean-gsl-tar clean-lapack-tar clean-matio-tar clean-slicot-tar clean-zlib-tar
 
 clean-all: clean-lib clean-src clean-tar
+
+install:
+	./install-packages.sh
 
 #
 # OpenBLAS library

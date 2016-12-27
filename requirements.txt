@@ -1,0 +1,1 @@
+ca-certificates make mingw-w64 gcc xz-utils p7zip-full bzip2 patch git gfortran autoconf
