@@ -9,9 +9,9 @@ include versions/octave.version
 ROOT_PATH = $(realpath .)
 
 .PHONY: clean-openblas-scr clean-openblas-tar clean-openblas-all clean-libopenblas \
-	clean-boost-scr clean-boost-tar clean-boost-all \
+	clean-boost-scr clean-boost-tar clean-boost-all clean-libboost \
 	clean-gsl-scr clean-gsl-tar clean-gsl-all clean-libgsl\
-	clean-slicot-scr clean-slicot-tar clean-slicot-all clean-libslicot\
+	clean-slicot-scr clean-slicot-tar clean-slicot-all clean-libslicot \
 	clean-matio-scr clean-matio-tar clean-matio-all clean-libmatio\
 	clean-zlib-scr clean-zlib-tar clean-zlib-scr clean-libzlib\
 	clean-lapack-scr clean-lapack-tar clean-lapack-all clean-liblapack\
@@ -19,6 +19,8 @@ ROOT_PATH = $(realpath .)
 	octave-libs \
 	install-matlab-files \
 	install
+
+all: build octave-libs install-matlab-files
 
 build: build-openblas build-lapack build-slicot build-matio build-boost build-gsl
 
@@ -32,7 +34,7 @@ download: sources/OpenBLAS/32 sources/OpenBLAS/64 \
 	octave-libs \
 	install-matlab-files
 
-clean-lib: clean-libopenblas clean-liblapack clean-libgsl clean-libzlib clean-libmatio clean-libslicot
+clean-lib: clean-libopenblas clean-liblapack clean-libgsl clean-libzlib clean-libmatio clean-libslicot clean-libboost clean-matlab clean-octave
 
 clean-src: clean-openblas-src clean-boost-src clean-gsl-src clean-lapack-src clean-matio-src clean-slicot-src clean-zlib-src
 
@@ -393,7 +395,7 @@ build-slicot: lib32/Slicot/without-underscore/lib/libslicot_pic.a lib32/Slicot/w
 
 clean-slicot-src: clean-slicot-32-with-underscore-src clean-slicot-32-without-underscore-src clean-slicot-64-with-32bit-integer-src clean-slicot-64-with-64bit-integer-src
 
-clean-libslicot: clean-libslicot-32-without-underscore clean-libslicot-32-with-underscore clean-libslicot-64
+clean-libslicot: clean-libslicot-32 clean-libslicot-64
 
 clean-slicot-tar:
 	rm -f slicot45.tar.gz
@@ -420,6 +422,9 @@ clean-libslicot-32-with-underscore:
 
 clean-libslicot-64:
 	rm -rf lib64/Slicot
+
+clean-libslicot-32:
+	rm -rf lib32/Slicot
 
 #
 # Zlib
@@ -514,6 +519,14 @@ lib64/octave/bin/octave.exe: octave-${OCTAVE_VERSION}-w64-installer.exe
 
 octave-libs: lib32/octave/bin/octave.exe lib64/octave/bin/octave.exe
 
+clean-octave:
+	rm -f octave-${OCTAVE_VERSION}-w64-installer.exe
+	rm -f octave-${OCTAVE_VERSION}-w64-installer.exe.sig
+	rm -f octave-${OCTAVE_VERSION}-w32-installer.exe
+	rm -f octave-${OCTAVE_VERSION}-w32-installer.exe.sig
+	rm -rf lib32/octave
+	rm -rf lib64/octave
+
 #
 # Matlab
 #
@@ -541,3 +554,9 @@ lib64/matlab/R2007a/bin/win64/matlab.exe: matlab64.tar.xz
 	@touch lib64/matlab/R2007a/bin/win64/matlab.exe
 
 install-matlab-files: lib32/matlab/R2007a/bin/matlab.bat lib64/matlab/R2007a/bin/win64/matlab.exe
+
+clean-matlab:
+	rm -f matlab32.tar.xz
+	rm -f matlab64.tar.xz
+	rm -rf lib32/matlab
+	rm -rf lib64/matlab
