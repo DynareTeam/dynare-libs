@@ -285,6 +285,9 @@ sources/matIO: sources/matIO/32 sources/matIO/64
 matio-${MATIO_VERSION}.tar.gz: versions/matio.version
 	wget https://sourceforge.net/projects/matio/files/matio/${MATIO_VERSION}/matio-${MATIO_VERSION}.tar.gz/download -O matio-${MATIO_VERSION}.tar.gz
 	touch matio-${MATIO_VERSION}.tar.gz
+	rm -rf ${ROOT_PATH}/lib32/matIO
+	rm -rf ${ROOT_PATH}/lib64/matIO
+	rm -rf ${ROOT_PATH}/sources/matIO
 
 lib32/matIO/lib/libmatio.a: sources/matIO/32 lib32/Zlib/lib/libz.a
 	cd sources/matIO/32 && ./configure --host=i686-w64-mingw32 --disable-shared --with-zlib=${ROOT_PATH}/lib32/Zlib --prefix=${ROOT_PATH}/lib32/matIO && make install
