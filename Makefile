@@ -166,6 +166,8 @@ sources/Gsl: sources/Gsl/32 sources/Gsl/64
 
 gsl-${GSL_VERSION}.tar.gz: versions/gsl.version
 	wget http://fr.mirror.babylon.network/gnu/gsl/gsl-${GSL_VERSION}.tar.gz
+	rm -rf ${ROOT_PATH}/sources/Gsl/32
+	rm -rf ${ROOT_PATH}/sources/Gsl/64
 	touch gsl-${GSL_VERSION}.tar.gz
 
 lib32/Gsl/lib/libgsl.a: sources/Gsl/32
