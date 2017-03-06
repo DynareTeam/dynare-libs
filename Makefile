@@ -119,6 +119,9 @@ boost_${BOOST_VERSION}.tar.bz2: versions/boost.version
 	rm -f boost_${BOOST_VERSION}.tar.bz2
 	wget https://sourceforge.net/projects/boost/files/boost/`echo "${BOOST_VERSION}" | sed -e 's/_/./g'`/boost_${BOOST_VERSION}.tar.bz2/download -O boost_${BOOST_VERSION}.tar.bz2
 	touch boost_${BOOST_VERSION}.tar.bz2
+	rm -rf ${ROOT_PATH}/sources/Boost
+	rm -rf ${ROOT_PATH}/lib32/Boost
+	rm -rf ${ROOT_PATH}/lib64/Boost
 
 build-boost: sources/Boost lib32/Boost/include lib64/Boost/include
 
