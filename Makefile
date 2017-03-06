@@ -225,6 +225,9 @@ sources/Lapack: sources/Lapack/32 sources/Lapack/64
 lapack-${LAPACK_VERSION}.tgz: versions/lapack.version
 	wget http://www.netlib.org/lapack/lapack-${LAPACK_VERSION}.tgz
 	touch lapack-${LAPACK_VERSION}.tgz
+	rm -rf ${ROOT_PATH}/sources/Lapack
+	rm -rf ${ROOT_PATH}/lib32/Lapack
+	rm -rf ${ROOT_PATH}/lib64/Lapack
 
 lib32/Lapack/liblapack.a: sources/Lapack/32
 	cp sources/Lapack/32/make.inc.example sources/Lapack/32/make.inc
