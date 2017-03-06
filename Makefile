@@ -298,12 +298,14 @@ matio-${MATIO_VERSION}.tar.gz: versions/matio.version
 	rm -rf ${ROOT_PATH}/sources/matIO
 
 lib32/matIO/lib/libmatio.a: sources/matIO/32 lib32/Zlib/lib/libz.a
+	patch sources/matIO/32/configure < patch/matIO-32.patch
 	cd sources/matIO/32 && ./configure --host=i686-w64-mingw32 --disable-shared --with-zlib=${ROOT_PATH}/lib32/Zlib --prefix=${ROOT_PATH}/lib32/matIO && make install
 	ln -s ${ROOT_PATH}/lib32/Zlib/include/zconf.h ${ROOT_PATH}/lib32/matIO/include/zconf.h
 	ln -s ${ROOT_PATH}/lib32/Zlib/include/zlib.h ${ROOT_PATH}/lib32/matIO/include/zlib.h
 	ln -s ${ROOT_PATH}/lib32/Zlib/lib/libz.a ${ROOT_PATH}/lib32/matIO/lib/libz.a
 
 lib64/matIO/lib/libmatio.a: sources/matIO/64 lib64/Zlib/lib/libz.a
+	patch sources/matIO/64/configure < patch/matIO-64.patch
 	cd sources/matIO/64 && ./configure --host=x86_64-w64-mingw32 --disable-shared --with-zlib=${ROOT_PATH}/lib64/Zlib --prefix=${ROOT_PATH}/lib64/matIO && make install
 	ln -s ${ROOT_PATH}/lib64/Zlib/include/zconf.h ${ROOT_PATH}/lib64/matIO/include/zconf.h
 	ln -s ${ROOT_PATH}/lib64/Zlib/include/zlib.h ${ROOT_PATH}/lib64/matIO/include/zlib.h
