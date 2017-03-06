@@ -449,6 +449,14 @@ sources/Zlib: sources/Zlib/64 sources/Zlib/32
 zlib-${ZLIB_VERSION}.tar.xz: versions/zlib.version
 	wget https://sourceforge.net/projects/libpng/files/zlib/${ZLIB_VERSION}/zlib-${ZLIB_VERSION}.tar.xz/download -O zlib-${ZLIB_VERSION}.tar.xz
 	touch zlib-${ZLIB_VERSION}.tar.xz
+	rm -rf sources/Zlib/32
+	rm -rf sources/Zlib/64
+	rm -rf ${ROOT_PATH}/lib32/matIO/include/zconf.h
+	rm -rf ${ROOT_PATH}/lib32/matIO/include/zlib.h
+	rm -rf ${ROOT_PATH}/lib32/matIO/lib/libz.a
+	rm -rf ${ROOT_PATH}/lib64/matIO/include/zconf.h
+	rm -rf ${ROOT_PATH}/lib64/matIO/include/zlib.h
+	rm -rf ${ROOT_PATH}/lib64/matIO/lib/libz.a
 
 lib32/Zlib/lib/libz.a: sources/Zlib/32
 	cd sources/Zlib/32 && CC=i686-w64-mingw32-gcc && ./configure --static --prefix=${ROOT_PATH}/lib32/Zlib && make install
