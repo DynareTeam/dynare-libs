@@ -4,7 +4,7 @@
  #  and handle these quantities appropriately. As a consequence, one 
  #  should not compile LAPACK with flags such as -ffpe-trap=overflow.
  #
--FORTRAN  = gfortran 
+-FORTRAN  = gfortran
 +FORTRAN  = x86_64-w64-mingw32-gfortran 
  OPTS     = -O2 -frecursive
  DRVOPTS  = $(OPTS)
