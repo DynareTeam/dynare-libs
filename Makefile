@@ -538,13 +538,15 @@ lib64/octave/bin/octave.exe: octave-${OCTAVE_VERSION}-w64-installer.exe
 
 octave-libs: lib32/octave/bin/octave.exe lib64/octave/bin/octave.exe
 
-clean-octave:
+clean-octave-libs:
+	rm -rf lib32/octave
+	rm -rf lib64/octave
+
+clean-octave: clean-octave-libs
 	rm -f octave-${OCTAVE_VERSION}-w64-installer.exe
 	rm -f octave-${OCTAVE_VERSION}-w64-installer.exe.sig
 	rm -f octave-${OCTAVE_VERSION}-w32-installer.exe
 	rm -f octave-${OCTAVE_VERSION}-w32-installer.exe.sig
-	rm -rf lib32/octave
-	rm -rf lib64/octave
 
 #
 # Matlab
