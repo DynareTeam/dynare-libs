@@ -15,7 +15,9 @@ ROOT_PATH = $(realpath .)
 	clean-matio-scr clean-matio-tar clean-matio-all clean-libmatio\
 	clean-zlib-scr clean-zlib-tar clean-zlib-scr clean-libzlib\
 	clean-lapack-scr clean-lapack-tar clean-lapack-all clean-liblapack\
+	clean-dll clean-dll32 clean-dll64 \
 	download build clean-src clean-all clean-lib clean-tar \
+	dll dll32 dll64 \
 	octave-libs \
 	install-matlab-files \
 	install
@@ -627,8 +629,39 @@ lib64/matlab/R2007a/bin/win64/matlab.exe: matlab64.tar.xz
 
 install-matlab-files: lib32/matlab/R2007a/bin/matlab.bat lib64/matlab/R2007a/bin/win64/matlab.exe
 
+
 clean-matlab:
 	rm -f matlab32.tar.xz
 	rm -f matlab64.tar.xz
 	rm -rf lib32/matlab
 	rm -rf lib64/matlab
+
+#
+# Dlls
+#
+
+lib32/libquadmath-0.dll:
+	wget -q -o /dev/null http://www.dynare.org/dynare-build/dll32/libquadmath-0.dll -O lib32/libquadmath-0.dll
+
+lib32/libgcc_s_sjlj-1.dll:
+	wget -q -o /dev/null http://www.dynare.org/dynare-build/dll32/libgcc_s_sjlj-1.dll -O lib32/libgcc_s_sjlj-1.dll
+
+lib64/libquadmath-0.dll:
+	wget -q -o /dev/null http://www.dynare.org/dynare-build/dll64/libquadmath-0.dll -O lib64/libquadmath-0.dll
+
+lib64/libgcc_s_seh-1.dll:
+	wget -q -o /dev/null http://www.dynare.org/dynare-build/dll64/libgcc_s_seh-1.dll -O lib64/libgcc_s_seh-1.dll
+
+dll32: lib32/libquadmath-0.dll lib32/libgcc_s_sjlj-1.dll
+
+dll64: lib64/libquadmath-0.dll lib64/libgcc_s_seh-1.dll
+
+dll: dll32 dll64
+
+clean-dll32:
+	rm -f lib32/libquadmath-0.dll lib32/libgcc_s_sjlj-1.dll
+
+clean-dll64:
+	rm -f lib64/libquadmath-0.dll lib64/libgcc_s_seh-1.dll
+
+clean-dll: clean-dll32 clean-dll64
