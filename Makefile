@@ -22,7 +22,7 @@ ROOT_PATH = $(realpath .)
 	install-matlab-files \
 	install
 
-all: build octave-libs install-matlab-files
+all: build octave-libs install-matlab-files dll
 
 build: build-openblas build-lapack build-slicot build-matio build-boost build-gsl
 
