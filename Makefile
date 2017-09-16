@@ -24,6 +24,11 @@ ROOT_PATH = $(realpath .)
 
 all: build octave-libs install-matlab-files dll
 
+mxe/user/bin/x86_64-w64-mingw32.static-gfortran:
+	git submodule update --init
+	echo "MXE_TARGETS = x86_64-w64-mingw32.static i686-w64-mingw32.static x86_64-w64-mingw32.shared i686-w64-mingw32.shared" > ./mxe/settings.mk
+	make -C mxe -j4 gcc
+
 build: build-openblas build-lapack build-slicot build-matio build-boost build-gsl
 
 download: sources/OpenBLAS/32 sources/OpenBLAS/64 \
