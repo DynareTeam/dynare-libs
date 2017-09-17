@@ -14,11 +14,11 @@
  # C compiler including binary type(32bit / 64bit). Default is gcc.
  # Don't use Intel Compiler or PGI, it won't generate right codes as I expect.
 -# CC = gcc
-+CC = x86_64-w64-mingw32-gcc
++CC = x86_64-w64-mingw32.static-gcc
  
  # Fortran compiler. Default is g77.
 -# FC = gfortran
-+FC = x86_64-w64-mingw32-gfortran
++FC = x86_64-w64-mingw32.static-gfortran
  
  # Even you can specify cross compiler. Meanwhile, please set HOSTCC.
  

@@ -78,15 +78,15 @@ build-openblas: lib32/OpenBLAS/libopenblas.a lib64/OpenBLAS/libopenblas.a
 
 lib32/OpenBLAS/libopenblas.a: sources/OpenBLAS/32
 	patch sources/OpenBLAS/32/Makefile.rule < patch/openblas-w32.patch
-	make -C sources/OpenBLAS/32
-	i686-w64-mingw32-strip --strip-debug sources/OpenBLAS/32/libopenblasp-r${OPENBLAS_VERSION}.a
+	export PATH=$(shell pwd)/mxe/usr/bin:${PATH}; make -C sources/OpenBLAS/32
+	export PATH=$(shell pwd)/mxe/usr/bin:${PATH}; i686-w64-mingw32.static-strip --strip-debug sources/OpenBLAS/32/libopenblasp-r${OPENBLAS_VERSION}.a
 	mkdir -p lib32/OpenBLAS
 	cp sources/OpenBLAS/32/libopenblasp-r${OPENBLAS_VERSION}.a lib32/OpenBLAS/libopenblas.a
 
 lib64/OpenBLAS/libopenblas.a: sources/OpenBLAS/64
 	patch sources/OpenBLAS/64/Makefile.rule < patch/openblas-w64.patch
-	make -C sources/OpenBLAS/64
-	x86_64-w64-mingw32-strip --strip-debug sources/OpenBLAS/64/libopenblasp-r${OPENBLAS_VERSION}.a
+	export PATH=$(shell pwd)/mxe/usr/bin:${PATH}; make -C sources/OpenBLAS/64
+	export PATH=$(shell pwd)/mxe/usr/bin:${PATH}; x86_64-w64-mingw32.static-strip --strip-debug sources/OpenBLAS/64/libopenblasp-r${OPENBLAS_VERSION}.a
 	mkdir -p lib64/OpenBLAS
 	cp sources/OpenBLAS/64/libopenblasp-r${OPENBLAS_VERSION}.a lib64/OpenBLAS/libopenblas.a
 
@@ -181,10 +181,10 @@ gsl-${GSL_VERSION}.tar.gz: versions/gsl.version
 	touch gsl-${GSL_VERSION}.tar.gz
 
 lib32/Gsl/lib/libgsl.a: sources/Gsl/32
-	cd sources/Gsl/32 && ./configure --host=i686-w64-mingw32 --prefix=${ROOT_PATH}/lib32/Gsl --disable-shared --enable-static && make && make install
+	export PATH=$(shell pwd)/mxe/usr/bin:${PATH} && cd sources/Gsl/32 && ./configure --host=i686-w64-mingw32.static --prefix=${ROOT_PATH}/lib32/Gsl --disable-shared --enable-static && make && make install
 
 lib64/Gsl/lib/libgsl.a: sources/Gsl/64
-	cd sources/Gsl/64 && ./configure --host=x86_64-w64-mingw32 --prefix=${ROOT_PATH}/lib64/Gsl --disable-shared --enable-static && make && make install
+	export PATH=$(shell pwd)/mxe/usr/bin:${PATH} && cd sources/Gsl/64 && ./configure --host=x86_64-w64-mingw32.static --prefix=${ROOT_PATH}/lib64/Gsl --disable-shared --enable-static && make && make install
 
 build-gsl: lib32/Gsl/lib/libgsl.a lib64/Gsl/lib/libgsl.a
 
@@ -239,8 +239,8 @@ lapack-${LAPACK_VERSION}.tgz: versions/lapack.version
 lib32/Lapack/liblapack.a: sources/Lapack/32
 	cp sources/Lapack/32/make.inc.example sources/Lapack/32/make.inc
 	patch sources/Lapack/32/make.inc < patch/lapack-w32.patch
-	make -C sources/Lapack/32/SRC
-	i686-w64-mingw32-strip --strip-debug sources/Lapack/32/liblapack.a
+	export PATH=$(shell pwd)/mxe/usr/bin:${PATH}; make -C sources/Lapack/32/SRC
+	export PATH=$(shell pwd)/mxe/usr/bin:${PATH}; i686-w64-mingw32.static-strip --strip-debug sources/Lapack/32/liblapack.a
 	mkdir -p lib32/Lapack
 	mv sources/Lapack/32/liblapack.a lib32/Lapack/liblapack.a
 	touch lib32/Lapack/liblapack.a
@@ -248,8 +248,8 @@ lib32/Lapack/liblapack.a: sources/Lapack/32
 lib64/Lapack/liblapack.a: sources/Lapack/64
 	cp sources/Lapack/64/make.inc.example sources/Lapack/64/make.inc
 	patch sources/Lapack/64/make.inc < patch/lapack-w64.patch
-	make -C sources/Lapack/64/SRC
-	x86_64-w64-mingw32-strip --strip-debug sources/Lapack/64/liblapack.a
+	export PATH=$(shell pwd)/mxe/usr/bin:${PATH}; make -C sources/Lapack/64/SRC
+	export PATH=$(shell pwd)/mxe/usr/bin:${PATH}; x86_64-w64-mingw32.static-strip --strip-debug sources/Lapack/64/liblapack.a
 	mkdir -p lib64/Lapack
 	mv sources/Lapack/64/liblapack.a lib64/Lapack/liblapack.a
 	touch lib64/Lapack/liblapack.a
@@ -305,13 +305,13 @@ matio-${MATIO_VERSION}.tar.gz: versions/matio.version
 	rm -rf ${ROOT_PATH}/sources/matIO
 
 lib32/matIO/lib/libmatio.a: sources/matIO/32 lib32/Zlib/lib/libz.a
-	cd sources/matIO/32 && ./configure --host=i686-w64-mingw32 --disable-shared --with-zlib=${ROOT_PATH}/lib32/Zlib --prefix=${ROOT_PATH}/lib32/matIO && make install
+	export PATH=$(shell pwd)/mxe/usr/bin:${PATH}; cd sources/matIO/32 && ./configure --host=i686-w64-mingw32.static --disable-shared --with-zlib=${ROOT_PATH}/lib32/Zlib --prefix=${ROOT_PATH}/lib32/matIO && make install
 	ln -s ${ROOT_PATH}/lib32/Zlib/include/zconf.h ${ROOT_PATH}/lib32/matIO/include/zconf.h
 	ln -s ${ROOT_PATH}/lib32/Zlib/include/zlib.h ${ROOT_PATH}/lib32/matIO/include/zlib.h
 	ln -s ${ROOT_PATH}/lib32/Zlib/lib/libz.a ${ROOT_PATH}/lib32/matIO/lib/libz.a
 
 lib64/matIO/lib/libmatio.a: sources/matIO/64 lib64/Zlib/lib/libz.a
-	cd sources/matIO/64 && ./configure --host=x86_64-w64-mingw32 --disable-shared --with-zlib=${ROOT_PATH}/lib64/Zlib --prefix=${ROOT_PATH}/lib64/matIO && make install
+	export PATH=$(shell pwd)/mxe/usr/bin:${PATH}; cd sources/matIO/64 && ./configure --host=x86_64-w64-mingw32.static --disable-shared --with-zlib=${ROOT_PATH}/lib64/Zlib --prefix=${ROOT_PATH}/lib64/matIO && make install
 	ln -s ${ROOT_PATH}/lib64/Zlib/include/zconf.h ${ROOT_PATH}/lib64/matIO/include/zconf.h
 	ln -s ${ROOT_PATH}/lib64/Zlib/include/zlib.h ${ROOT_PATH}/lib64/matIO/include/zlib.h
 	ln -s ${ROOT_PATH}/lib64/Zlib/lib/libz.a ${ROOT_PATH}/lib64/matIO/lib/libz.a
@@ -398,48 +398,48 @@ slicot45.tar.gz:
 
 lib32/Slicot/without-underscore/lib/libslicot_pic.a: sources/Slicot/32/without-underscore
 	patch sources/Slicot/32/without-underscore/make.inc < patch/slicot-32-without-underscore.patch
-	make -C sources/Slicot/32/without-underscore lib
-	i686-w64-mingw32-strip --strip-debug sources/Slicot//32/without-underscore/libslicot_pic.a
+	export PATH=$(shell pwd)/mxe/usr/bin:${PATH}; make -C sources/Slicot/32/without-underscore lib
+	export PATH=$(shell pwd)/mxe/usr/bin:${PATH}; i686-w64-mingw32.static-strip --strip-debug sources/Slicot//32/without-underscore/libslicot_pic.a
 	mkdir -p lib32/Slicot/without-underscore/lib
 	mv sources/Slicot/32/without-underscore/libslicot_pic.a lib32/Slicot/without-underscore/lib/libslicot_pic.a
 	touch lib32/Slicot/without-underscore/lib/libslicot_pic.a
 
 lib32/Slicot/with-underscore/lib/libslicot_pic.a: sources/Slicot/32/with-underscore
 	patch sources/Slicot/32/with-underscore/make.inc < patch/slicot-32-with-underscore.patch
-	make -C sources/Slicot/32/with-underscore lib
-	i686-w64-mingw32-strip --strip-debug sources/Slicot/32/with-underscore/libslicot_pic.a
+	export PATH=$(shell pwd)/mxe/usr/bin:${PATH}; make -C sources/Slicot/32/with-underscore lib
+	export PATH=$(shell pwd)/mxe/usr/bin:${PATH}; i686-w64-mingw32.static-strip --strip-debug sources/Slicot/32/with-underscore/libslicot_pic.a
 	mkdir -p lib32/Slicot/with-underscore/lib
 	mv sources/Slicot/32/with-underscore/libslicot_pic.a lib32/Slicot/with-underscore/lib/libslicot_pic.a
 	touch lib32/Slicot/with-underscore/lib/libslicot_pic.a
 
 lib64/Slicot/without-underscore/lib/libslicot_pic.a: sources/Slicot/64/with-32bit-integer
 	patch sources/Slicot/64/with-32bit-integer/make.inc < patch/slicot-64-with-32bit-integer.patch
-	make -C sources/Slicot/64/with-32bit-integer lib
-	x86_64-w64-mingw32-strip --strip-debug sources/Slicot/64/with-32bit-integer/libslicot_pic.a
+	export PATH=$(shell pwd)/mxe/usr/bin:${PATH}; make -C sources/Slicot/64/with-32bit-integer lib
+	export PATH=$(shell pwd)/mxe/usr/bin:${PATH}; x86_64-w64-mingw32.static-strip --strip-debug sources/Slicot/64/with-32bit-integer/libslicot_pic.a
 	mkdir -p lib64/Slicot/without-underscore/lib
 	mv sources/Slicot/64/with-32bit-integer/libslicot_pic.a lib64/Slicot/without-underscore/lib/libslicot_pic.a
 	touch lib64/Slicot/without-underscore/lib/libslicot_pic.a
 
 lib64/Slicot/without-underscore/lib/libslicot64_pic.a: sources/Slicot/64/with-64bit-integer
 	patch sources/Slicot/64/with-64bit-integer/make.inc < patch/slicot-64-with-64bit-integer.patch
-	make -C sources/Slicot/64/with-64bit-integer lib
-	x86_64-w64-mingw32-strip --strip-debug sources/Slicot/64/with-64bit-integer/libslicot64_pic.a
+	export PATH=$(shell pwd)/mxe/usr/bin:${PATH}; make -C sources/Slicot/64/with-64bit-integer lib
+	export PATH=$(shell pwd)/mxe/usr/bin:${PATH}; x86_64-w64-mingw32.static-strip --strip-debug sources/Slicot/64/with-64bit-integer/libslicot64_pic.a
 	mkdir -p lib64/Slicot/without-underscore/lib
 	mv sources/Slicot/64/with-64bit-integer/libslicot64_pic.a lib64/Slicot/without-underscore/lib/libslicot64_pic.a
 	touch lib64/Slicot/without-underscore/lib/libslicot64_pic.a
 
 lib64/Slicot/with-underscore/lib/libslicot_pic.a: sources/Slicot/64/with-32bit-integer-and-underscore
 	patch sources/Slicot/64/with-32bit-integer-and-underscore/make.inc < patch/slicot-64-with-32bit-integer-and-underscore.patch
-	make -C sources/Slicot/64/with-32bit-integer-and-underscore lib
-	x86_64-w64-mingw32-strip --strip-debug sources/Slicot/64/with-32bit-integer-and-underscore/libslicot_pic.a
+	export PATH=$(shell pwd)/mxe/usr/bin:${PATH}; make -C sources/Slicot/64/with-32bit-integer-and-underscore lib
+	export PATH=$(shell pwd)/mxe/usr/bin:${PATH}; x86_64-w64-mingw32.static-strip --strip-debug sources/Slicot/64/with-32bit-integer-and-underscore/libslicot_pic.a
 	mkdir -p lib64/Slicot/with-underscore/lib
 	mv sources/Slicot/64/with-32bit-integer-and-underscore/libslicot_pic.a lib64/Slicot/with-underscore/lib/libslicot_pic.a
 	touch lib64/Slicot/with-underscore/lib/libslicot_pic.a
 
 lib64/Slicot/with-underscore/lib/libslicot64_pic.a: sources/Slicot/64/with-64bit-integer-and-underscore
 	patch sources/Slicot/64/with-64bit-integer-and-underscore/make.inc < patch/slicot-64-with-64bit-integer-and-underscore.patch
-	make -C sources/Slicot/64/with-64bit-integer-and-underscore lib
-	x86_64-w64-mingw32-strip --strip-debug sources/Slicot/64/with-64bit-integer-and-underscore/libslicot64_pic.a
+	export PATH=$(shell pwd)/mxe/usr/bin:${PATH}; make -C sources/Slicot/64/with-64bit-integer-and-underscore lib
+	export PATH=$(shell pwd)/mxe/usr/bin:${PATH}; x86_64-w64-mingw32.static-strip --strip-debug sources/Slicot/64/with-64bit-integer-and-underscore/libslicot64_pic.a
 	mkdir -p lib64/Slicot/with-underscore/lib
 	mv sources/Slicot/64/with-64bit-integer-and-underscore/libslicot64_pic.a lib64/Slicot/with-underscore/lib/libslicot64_pic.a
 	touch lib64/Slicot/with-underscore/lib/libslicot64_pic.a
@@ -528,10 +528,10 @@ zlib-${ZLIB_VERSION}.tar.xz: versions/zlib.version
 	rm -rf ${ROOT_PATH}/lib64/matIO/lib/libz.a
 
 lib32/Zlib/lib/libz.a: sources/Zlib/32
-	cd sources/Zlib/32 && CC=i686-w64-mingw32-gcc && ./configure --static --prefix=${ROOT_PATH}/lib32/Zlib && make install
+	export PATH=$(shell pwd)/mxe/usr/bin:${PATH}; cd sources/Zlib/32 && CC=i686-w64-mingw32.static-gcc && ./configure --static --prefix=${ROOT_PATH}/lib32/Zlib && make install
 
 lib64/Zlib/lib/libz.a: sources/Zlib/64
-	cd sources/Zlib/64 && CC=x86_64-w64-mingw32-gcc && ./configure --static --prefix=${ROOT_PATH}/lib64/Zlib && make install
+	export PATH=$(shell pwd)/mxe/usr/bin:${PATH}; cd sources/Zlib/64 && CC=x86_64-w64-mingw32.static-gcc && ./configure --static --prefix=${ROOT_PATH}/lib64/Zlib && make install
 
 build-zlib: lib32/Zlib/lib/libz.a lib64/Zlib/lib/libz.a
 

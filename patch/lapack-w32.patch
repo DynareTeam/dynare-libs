@@ -5,12 +5,12 @@
  #  should not compile LAPACK with flags such as -ffpe-trap=overflow.
  #
 -FORTRAN  = gfortran 
-+FORTRAN  = i686-w64-mingw32-gfortran 
++FORTRAN  = i686-w64-mingw32.static-gfortran 
  OPTS     = -O2 -frecursive
  DRVOPTS  = $(OPTS)
  NOOPT    = -O0 -frecursive
 -LOADER   = gfortran
-+LOADER   = i686-w64-mingw32-gfortran
++LOADER   = i686-w64-mingw32.static-gfortran
  LOADOPTS =
  #
  #  Comment out the following line to include deprecated routines to the
@@ -19,17 +19,17 @@
  # CC is the C compiler, normally invoked with options CFLAGS.
  #
 -CC = gcc
-+CC = i686-w64-mingw32-gcc
++CC = i686-w64-mingw32.static-gcc
  CFLAGS = -O3
  #
  #  The archiver and the flag(s) to use when building archive (library)
  #  If you system has no ranlib, set RANLIB = echo.
  #
 -ARCH     = ar
-+ARCH     = i686-w64-mingw32-ar
++ARCH     = i686-w64-mingw32.static-ar
  ARCHFLAGS= cr
 -RANLIB   = ranlib
-+RANLIB   = i686-w64-mingw32-ranlib
++RANLIB   = i686-w64-mingw32.static-ranlib
  #
  #  Location of the extended-precision BLAS (XBLAS) Fortran library
  #  used for building and testing extended-precision routines.  The
