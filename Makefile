@@ -22,7 +22,9 @@ ROOT_PATH = $(realpath .)
 	install-matlab-files \
 	install
 
-all: build octave-libs install-matlab-files dll
+all: mxe build octave-libs install-matlab-files dll
+
+mxe: mxe/user/bin/x86_64-w64-mingw32.static-gfortran
 
 mxe/user/bin/x86_64-w64-mingw32.static-gfortran:
 	git submodule update --init
