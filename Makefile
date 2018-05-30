@@ -170,7 +170,7 @@ sources/Gsl/64: gsl-${GSL_VERSION}.tar.gz
 sources/Gsl: sources/Gsl/32 sources/Gsl/64
 
 gsl-${GSL_VERSION}.tar.gz: versions/gsl.version
-	wget http://fr.mirror.babylon.network/gnu/gsl/gsl-${GSL_VERSION}.tar.gz
+	wget https://ftpmirror.gnu.org/gnu/gsl/gsl-${GSL_VERSION}.tar.gz
 	rm -rf ${ROOT_PATH}/sources/Gsl/32
 	rm -rf ${ROOT_PATH}/sources/Gsl/64
 	touch gsl-${GSL_VERSION}.tar.gz
@@ -556,19 +556,19 @@ clean-zlib-64-src:
 #
 
 octave-${OCTAVE_VERSION}-w32-installer.exe: versions/octave.version
-	@echo "Download octave-${OCTAVE_VERSION}-w32-installer.exe from https://ftp.gnu.org/gnu/octave/windows ..."
-	@wget -q -o /dev/null https://ftp.gnu.org/gnu/octave/windows/octave-${OCTAVE_VERSION}-w32-installer.exe -O octave-${OCTAVE_VERSION}-w32-installer.exe
-	@echo "Download octave-${OCTAVE_VERSION}-w32-installer.exe.sig from https://ftp.gnu.org/gnu/octave/windows ..."
-	@wget -q -o /dev/null https://ftp.gnu.org/gnu/octave/windows/octave-${OCTAVE_VERSION}-w32-installer.exe.sig -O octave-${OCTAVE_VERSION}-w32-installer.exe.sig
+	@echo "Download octave-${OCTAVE_VERSION}-w32-installer.exe from https://ftpmirror.gnu.org/gnu/octave/windows ..."
+	@wget -q -o /dev/null https://ftpmirror.gnu.org/gnu/octave/windows/octave-${OCTAVE_VERSION}-w32-installer.exe -O octave-${OCTAVE_VERSION}-w32-installer.exe
+	@echo "Download octave-${OCTAVE_VERSION}-w32-installer.exe.sig from https://ftpmirror.gnu.org/gnu/octave/windows ..."
+	@wget -q -o /dev/null https://ftpmirror.gnu.org/gnu/octave/windows/octave-${OCTAVE_VERSION}-w32-installer.exe.sig -O octave-${OCTAVE_VERSION}-w32-installer.exe.sig
 	gpg --verify octave-${OCTAVE_VERSION}-w32-installer.exe.sig octave-${OCTAVE_VERSION}-w32-installer.exe
 	@touch octave-${OCTAVE_VERSION}-w32-installer.exe.sig
 	@touch octave-${OCTAVE_VERSION}-w32-installer.exe
 
 octave-${OCTAVE_VERSION}-w64-installer.exe: versions/octave.version
-	@echo "Download octave-${OCTAVE_VERSION}-w64-installer.exe from https://ftp.gnu.org/gnu/octave/windows ..."
-	@wget -q -o /dev/null https://ftp.gnu.org/gnu/octave/windows/octave-${OCTAVE_VERSION}-w64-installer.exe -O octave-${OCTAVE_VERSION}-w64-installer.exe
-	@echo "Download octave-${OCTAVE_VERSION}-w64-installer.exe.sig from https://ftp.gnu.org/gnu/octave/windows ..."
-	@wget -q -o /dev/null https://ftp.gnu.org/gnu/octave/windows/octave-${OCTAVE_VERSION}-w64-installer.exe.sig -O octave-${OCTAVE_VERSION}-w64-installer.exe.sig
+	@echo "Download octave-${OCTAVE_VERSION}-w64-installer.exe from https://ftpmirror.gnu.org/gnu/octave/windows ..."
+	@wget -q -o /dev/null https://ftpmirror.gnu.org/gnu/octave/windows/octave-${OCTAVE_VERSION}-w64-installer.exe -O octave-${OCTAVE_VERSION}-w64-installer.exe
+	@echo "Download octave-${OCTAVE_VERSION}-w64-installer.exe.sig from https://ftpmirror.gnu.org/gnu/octave/windows ..."
+	@wget -q -o /dev/null https://ftpmirror.gnu.org/gnu/octave/windows/octave-${OCTAVE_VERSION}-w64-installer.exe.sig -O octave-${OCTAVE_VERSION}-w64-installer.exe.sig
 	gpg --verify octave-${OCTAVE_VERSION}-w64-installer.exe.sig octave-${OCTAVE_VERSION}-w64-installer.exe
 	@touch octave-${OCTAVE_VERSION}-w64-installer.exe.sig
 	@touch octave-${OCTAVE_VERSION}-w64-installer.exe
