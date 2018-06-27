@@ -8,13 +8,13 @@ include versions/octave.version
 
 ROOT_PATH = $(realpath .)
 
-.PHONY: clean-openblas-scr clean-openblas-tar clean-openblas-all clean-libopenblas \
-	clean-boost-scr clean-boost-tar clean-boost-all clean-libboost \
-	clean-gsl-scr clean-gsl-tar clean-gsl-all clean-libgsl\
-	clean-slicot-scr clean-slicot-tar clean-slicot-all clean-libslicot \
-	clean-matio-scr clean-matio-tar clean-matio-all clean-libmatio\
-	clean-zlib-scr clean-zlib-tar clean-zlib-scr clean-libzlib\
-	clean-lapack-scr clean-lapack-tar clean-lapack-all clean-liblapack\
+.PHONY: clean-openblas-src clean-openblas-tar clean-openblas-all clean-libopenblas \
+	clean-boost-src clean-boost-tar clean-boost-all clean-libboost \
+	clean-gsl-src clean-gsl-tar clean-gsl-all clean-libgsl\
+	clean-slicot-src clean-slicot-tar clean-slicot-all clean-libslicot \
+	clean-matio-src clean-matio-tar clean-matio-all clean-libmatio\
+	clean-zlib-src clean-zlib-tar clean-zlib-src clean-libzlib\
+	clean-lapack-src clean-lapack-tar clean-lapack-all clean-liblapack\
 	clean-dll clean-dll32 clean-dll64 \
 	download build clean-src clean-all clean-lib clean-tar \
 	dll dll32 dll64 \
