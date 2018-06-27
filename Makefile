@@ -110,12 +110,19 @@ clean-libopenblas-64:
 # Boost library
 #
 
-sources/Boost: boost_${BOOST_VERSION}.tar.bz2
-	rm -rf sources/Boost
-	tar xjf boost_${BOOST_VERSION}.tar.bz2
-	mkdir sources/Boost
-	mv boost_${BOOST_VERSION}/* sources/Boost
-	rm -r boost_${BOOST_VERSION}
+sources/Boost/32: boost_${BOOST_VERSION}.tar.bz2
+	mkdir -p tmp-boost-32
+	tar xf boost_${BOOST_VERSION}.tar.bz2 --directory tmp-boost-32
+	mkdir -p sources/Boost/32
+	mv tmp-boost-32/boost_${BOOST_VERSION}/* sources/Boost/32/
+	rm -r tmp-boost-32
+
+sources/Boost/64: boost_${BOOST_VERSION}.tar.bz2
+	mkdir -p tmp-boost-64
+	tar xf boost_${BOOST_VERSION}.tar.bz2 --directory tmp-boost-64
+	mkdir -p sources/Boost/64
+	mv tmp-boost-64/boost_${BOOST_VERSION}/* sources/Boost/64/
+	rm -r tmp-boost-64
 
 boost_${BOOST_VERSION}.tar.bz2: versions/boost.version
 	rm -f boost_${BOOST_VERSION}.tar.bz2
@@ -125,23 +132,30 @@ boost_${BOOST_VERSION}.tar.bz2: versions/boost.version
 	rm -rf ${ROOT_PATH}/lib32/Boost
 	rm -rf ${ROOT_PATH}/lib64/Boost
 
-build-boost: sources/Boost lib32/Boost/include lib64/Boost/include
+build-boost: lib32/Boost lib64/Boost
 
-lib32/Boost/include: sources/Boost
-	mkdir -p lib32/Boost/include
-	ln -s ${ROOT_PATH}/sources/Boost/boost ${ROOT_PATH}/lib32/Boost/include/boost
-	touch lib32/Boost/include
+lib32/Boost: sources/Boost/32
+	echo "using gcc : mingw : i686-w64-mingw32-g++ ;" > sources/Boost/32/user-config.jam
+	cd sources/Boost/32 && ./bootstrap.sh --with-libraries=system,filesystem --prefix=${ROOT_PATH}/lib32/Boost && ./b2 -a -q --user-config=user-config.jam toolset=gcc-mingw target-os=windows variant=release install
 
-lib64/Boost/include: sources/Boost
-	mkdir -p lib64/Boost/include
-	ln -s ${ROOT_PATH}/sources/Boost/boost ${ROOT_PATH}/lib64/Boost/include/boost
-	touch lib64/Boost/include
+lib64/Boost: sources/Boost/64
+	echo "using gcc : mingw : x86_64-w64-mingw32-g++ ;" > sources/Boost/64/user-config.jam
+	cd sources/Boost/64 && ./bootstrap.sh --with-libraries=system,filesystem --prefix=${ROOT_PATH}/lib64/Boost && ./b2 -a -q --user-config=user-config.jam toolset=gcc-mingw target-os=windows variant=release install
 
-clean-boost-src:
-	rm -fr sources/Boost
+clean-boost-src: clean-boost-32-src clean-boost-64-src
 
-clean-libboost:
+clean-boost-32-src:
+	rm -fr sources/Boost/32
+
+clean-boost-64-src:
+	rm -fr sources/Boost/64
+
+clean-libboost: clean-libboost-32 clean-libboost-64
+
+clean-libboost-32:
 	rm -fr lib32/Boost
+
+clean-libboost-64:
 	rm -fr lib64/Boost
 
 clean-boost-tar:
