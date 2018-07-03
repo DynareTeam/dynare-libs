@@ -2,6 +2,6 @@
 *.tar.gz
 *.tar.xz
 *.tgz
-*.exe
-*.exe.sig
+*.7z
+*.7z.sig
 *.dll

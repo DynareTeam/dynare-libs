@@ -555,38 +555,32 @@ clean-zlib-64-src:
 # Octave
 #
 
-octave-${OCTAVE_VERSION}-w32-installer.exe: versions/octave.version
-	@echo "Download octave-${OCTAVE_VERSION}-w32-installer.exe from https://ftpmirror.gnu.org/gnu/octave/windows ..."
-	@wget -q -o /dev/null https://ftpmirror.gnu.org/gnu/octave/windows/octave-${OCTAVE_VERSION}-w32-installer.exe -O octave-${OCTAVE_VERSION}-w32-installer.exe
-	@echo "Download octave-${OCTAVE_VERSION}-w32-installer.exe.sig from https://ftpmirror.gnu.org/gnu/octave/windows ..."
-	@wget -q -o /dev/null https://ftpmirror.gnu.org/gnu/octave/windows/octave-${OCTAVE_VERSION}-w32-installer.exe.sig -O octave-${OCTAVE_VERSION}-w32-installer.exe.sig
-	gpg --verify octave-${OCTAVE_VERSION}-w32-installer.exe.sig octave-${OCTAVE_VERSION}-w32-installer.exe
-	@touch octave-${OCTAVE_VERSION}-w32-installer.exe.sig
-	@touch octave-${OCTAVE_VERSION}-w32-installer.exe
+octave-${OCTAVE_VERSION}-w32${OCTAVE_W32_BUILD}.7z: versions/octave.version
+	@echo "Download $@ from https://ftpmirror.gnu.org/gnu/octave/windows ..."
+	@wget -q -o /dev/null https://ftpmirror.gnu.org/gnu/octave/windows/$@
+	@echo "Download $@.sig from https://ftpmirror.gnu.org/gnu/octave/windows ..."
+	@wget -q -o /dev/null https://ftpmirror.gnu.org/gnu/octave/windows/$@.sig
+	gpg --verify $@.sig $@
+	@touch $@ $@.sig
 
-octave-${OCTAVE_VERSION}-w64-installer.exe: versions/octave.version
-	@echo "Download octave-${OCTAVE_VERSION}-w64-installer.exe from https://ftpmirror.gnu.org/gnu/octave/windows ..."
-	@wget -q -o /dev/null https://ftpmirror.gnu.org/gnu/octave/windows/octave-${OCTAVE_VERSION}-w64-installer.exe -O octave-${OCTAVE_VERSION}-w64-installer.exe
-	@echo "Download octave-${OCTAVE_VERSION}-w64-installer.exe.sig from https://ftpmirror.gnu.org/gnu/octave/windows ..."
-	@wget -q -o /dev/null https://ftpmirror.gnu.org/gnu/octave/windows/octave-${OCTAVE_VERSION}-w64-installer.exe.sig -O octave-${OCTAVE_VERSION}-w64-installer.exe.sig
-	gpg --verify octave-${OCTAVE_VERSION}-w64-installer.exe.sig octave-${OCTAVE_VERSION}-w64-installer.exe
-	@touch octave-${OCTAVE_VERSION}-w64-installer.exe.sig
-	@touch octave-${OCTAVE_VERSION}-w64-installer.exe
+octave-${OCTAVE_VERSION}-w64${OCTAVE_W64_BUILD}.7z: versions/octave.version
+	@echo "Download $@ from https://ftpmirror.gnu.org/gnu/octave/windows ..."
+	@wget -q -o /dev/null https://ftpmirror.gnu.org/gnu/octave/windows/$@
+	@echo "Download $@.sig from https://ftpmirror.gnu.org/gnu/octave/windows ..."
+	@wget -q -o /dev/null https://ftpmirror.gnu.org/gnu/octave/windows/$@.sig
+	gpg --verify $@.sig $@
+	@touch $@ $@.sig
 
-lib32/octave/bin/octave.exe: octave-${OCTAVE_VERSION}-w32-installer.exe
+lib32/octave/bin/octave.exe: octave-${OCTAVE_VERSION}-w32${OCTAVE_W32_BUILD}.7z
 	@echo "Unarchive Octave 32bits..."
-	@mkdir -p lib32/octave
-	@cp octave-${OCTAVE_VERSION}-w32-installer.exe lib32/octave
-	@cd lib32/octave && 7z x octave-${OCTAVE_VERSION}-w32-installer.exe > /dev/null
-	@rm lib32/octave/octave-${OCTAVE_VERSION}-w32-installer.exe
+	@7z x -olib32 $< > /dev/null
+	@mv lib32/octave-${OCTAVE_VERSION}-w32 lib32/octave
 	@touch lib32/octave/bin/octave.exe
 
-lib64/octave/bin/octave.exe: octave-${OCTAVE_VERSION}-w64-installer.exe
+lib64/octave/bin/octave.exe: octave-${OCTAVE_VERSION}-w64${OCTAVE_W64_BUILD}.7z
 	@echo "Unarchive Octave 64bits..."
-	@mkdir -p lib64/octave
-	@cp octave-${OCTAVE_VERSION}-w64-installer.exe lib64/octave
-	@cd lib64/octave && 7z x octave-${OCTAVE_VERSION}-w64-installer.exe > /dev/null
-	@rm lib64/octave/octave-${OCTAVE_VERSION}-w64-installer.exe
+	@7z x -olib64 $< > /dev/null
+	@mv lib64/octave-${OCTAVE_VERSION}-w64 lib64/octave
 	@touch lib64/octave/bin/octave.exe
 
 octave-libs: lib32/octave/bin/octave.exe lib64/octave/bin/octave.exe
@@ -596,10 +590,10 @@ clean-octave-libs:
 	rm -rf lib64/octave
 
 clean-octave: clean-octave-libs
-	rm -f octave-${OCTAVE_VERSION}-w64-installer.exe
-	rm -f octave-${OCTAVE_VERSION}-w64-installer.exe.sig
-	rm -f octave-${OCTAVE_VERSION}-w32-installer.exe
-	rm -f octave-${OCTAVE_VERSION}-w32-installer.exe.sig
+	rm -f octave-${OCTAVE_VERSION}-w64${OCTAVE_W64_BUILD}.7z
+	rm -f octave-${OCTAVE_VERSION}-w64${OCTAVE_W64_BUILD}.7z.sig
+	rm -f octave-${OCTAVE_VERSION}-w32${OCTAVE_W32_BUILD}.7z
+	rm -f octave-${OCTAVE_VERSION}-w32${OCTAVE_W32_BUILD}.7z.sig
 
 #
 # Matlab
