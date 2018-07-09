@@ -56,12 +56,8 @@
  
  # If you don't need CBLAS interface, please comment it in.
  # NO_CBLAS = 1
-@@ -75,10 +75,10 @@
- 
- # If you don't need LAPACK, please comment it in.
- # If you set NO_LAPACK=1, the library automatically sets NO_LAPACKE=1.
--# NO_LAPACK = 1
-+NO_LAPACK = 1
+@@ -75,7 +75,7 @@
+ # NO_LAPACK = 1
  
  # If you don't need LAPACKE (C Interface to LAPACK), please comment it in.
 -# NO_LAPACKE = 1

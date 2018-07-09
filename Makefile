@@ -1,5 +1,4 @@
 include versions/openblas.version
-include versions/lapack.version
 include versions/gsl.version
 include versions/boost.version
 include versions/matio.version
@@ -14,7 +13,6 @@ ROOT_PATH = $(realpath .)
 	clean-slicot-src clean-slicot-tar clean-slicot-all clean-libslicot \
 	clean-matio-src clean-matio-tar clean-matio-all clean-libmatio\
 	clean-zlib-src clean-zlib-tar clean-zlib-src clean-libzlib\
-	clean-lapack-src clean-lapack-tar clean-lapack-all clean-liblapack\
 	clean-dll clean-dll32 clean-dll64 \
 	download build clean-src clean-all clean-lib clean-tar \
 	dll dll32 dll64 \
@@ -24,23 +22,22 @@ ROOT_PATH = $(realpath .)
 
 all: build octave-libs install-matlab-files dll
 
-build: build-openblas build-lapack build-slicot build-matio build-boost build-gsl
+build: build-openblas build-slicot build-matio build-boost build-gsl
 
 download: sources/OpenBLAS/32 sources/OpenBLAS/64 \
 	sources/Boost \
 	sources/Gsl \
-	sources/Lapack \
 	sources/matIO \
 	sources/Slicot \
 	sources/Zlib \
 	octave-libs \
 	install-matlab-files
 
-clean-lib: clean-libopenblas clean-liblapack clean-libgsl clean-libzlib clean-libmatio clean-libslicot clean-libboost clean-matlab clean-octave
+clean-lib: clean-libopenblas clean-libgsl clean-libzlib clean-libmatio clean-libslicot clean-libboost clean-matlab clean-octave
 
-clean-src: clean-openblas-src clean-boost-src clean-gsl-src clean-lapack-src clean-matio-src clean-slicot-src clean-zlib-src
+clean-src: clean-openblas-src clean-boost-src clean-gsl-src clean-matio-src clean-slicot-src clean-zlib-src
 
-clean-tar: clean-openblas-tar clean-boost-tar clean-gsl-tar clean-lapack-tar clean-matio-tar clean-slicot-tar clean-zlib-tar
+clean-tar: clean-openblas-tar clean-boost-tar clean-gsl-tar clean-matio-tar clean-slicot-tar clean-zlib-tar
 
 clean-all: clean-lib clean-src clean-tar
 
@@ -217,74 +214,6 @@ clean-libgsl-32:
 
 clean-libgsl-64:
 	rm -rf lib64/Gsl
-
-#
-# Lapack
-#
-
-sources/Lapack/32: lapack-${LAPACK_VERSION}.tgz
-	mkdir -p tmp-lapack-32
-	tar -zxf lapack-${LAPACK_VERSION}.tgz --directory tmp-lapack-32
-	mkdir -p sources/Lapack/32
-	mv tmp-lapack-32/lapack-${LAPACK_VERSION}/* sources/Lapack/32
-	rm -rf tmp-lapack-32
-
-sources/Lapack/64: lapack-${LAPACK_VERSION}.tgz
-	mkdir -p tmp-lapack-64
-	tar -zxf lapack-${LAPACK_VERSION}.tgz --directory tmp-lapack-64
-	mkdir -p sources/Lapack/64
-	mv tmp-lapack-64/lapack-${LAPACK_VERSION}/* sources/Lapack/64
-	rm -rf tmp-lapack-64
-
-sources/Lapack: sources/Lapack/32 sources/Lapack/64
-
-lapack-${LAPACK_VERSION}.tgz: versions/lapack.version
-	wget http://www.netlib.org/lapack/lapack-${LAPACK_VERSION}.tgz
-	touch lapack-${LAPACK_VERSION}.tgz
-	rm -rf ${ROOT_PATH}/sources/Lapack
-	rm -rf ${ROOT_PATH}/lib32/Lapack
-	rm -rf ${ROOT_PATH}/lib64/Lapack
-
-lib32/Lapack/liblapack.a: sources/Lapack/32
-	cp sources/Lapack/32/make.inc.example sources/Lapack/32/make.inc
-	patch sources/Lapack/32/make.inc < patch/lapack-w32.patch
-	make -C sources/Lapack/32/SRC
-	i686-w64-mingw32-strip --strip-debug sources/Lapack/32/liblapack.a
-	mkdir -p lib32/Lapack
-	mv sources/Lapack/32/liblapack.a lib32/Lapack/liblapack.a
-	touch lib32/Lapack/liblapack.a
-
-lib64/Lapack/liblapack.a: sources/Lapack/64
-	cp sources/Lapack/64/make.inc.example sources/Lapack/64/make.inc
-	patch sources/Lapack/64/make.inc < patch/lapack-w64.patch
-	make -C sources/Lapack/64/SRC
-	x86_64-w64-mingw32-strip --strip-debug sources/Lapack/64/liblapack.a
-	mkdir -p lib64/Lapack
-	mv sources/Lapack/64/liblapack.a lib64/Lapack/liblapack.a
-	touch lib64/Lapack/liblapack.a
-
-build-lapack: lib32/Lapack/liblapack.a lib64/Lapack/liblapack.a
-
-clean-lapack-src: clean-lapack-32-src clean-lapack-64-src
-
-clean-liblapack: clean-liblapack-32 clean-liblapack-64
-
-clean-lapack-tar:
-	rm -f lapack-${LAPACK_VERSION}.tgz
-
-clean-lapack-all: clean-lapack-src clean-lapack-tar clean-liblapack
-
-clean-liblapack-32:
-	rm -rf lib32/Lapack
-
-clean-liblapack-64:
-	rm -rf lib64/Lapack
-
-clean-lapack-32-src:
-	rm -rf sources/Lapack/32
-
-clean-lapack-64-src:
-	rm -rf sources/Lapack/64
 
 #
 # matIO
