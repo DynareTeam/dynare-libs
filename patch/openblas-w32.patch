@@ -1,15 +1,15 @@
---- Makefile.rule	2016-09-01 05:58:42.000000000 +0200
-+++ Makefile.rule.32	2016-09-16 00:21:34.389679614 +0200
-@@ -12,17 +12,17 @@
- 
- # You can specify the target architecture, otherwise it's
- # automatically detected.
--# TARGET = PENRYN
-+TARGET = GENERIC
+--- Makefile.rule.orig	2018-07-09 14:20:37.008697058 +0200
++++ Makefile.rule	2018-07-09 14:26:24.284693746 +0200
+@@ -15,7 +15,7 @@
+ # TARGET = PENRYN
  
  # If you want to support multiple architecture in one binary
 -# DYNAMIC_ARCH = 1
 +DYNAMIC_ARCH = 1
+ 
+ # If you want the full list of x86_64 architectures supported in DYNAMIC_ARCH
+ # mode (including individual optimizied codes for PENRYN, DUNNINGTON, OPTERON,
+@@ -24,10 +24,10 @@
  
  # C compiler including binary type(32bit / 64bit). Default is gcc.
  # Don't use Intel Compiler or PGI, it won't generate right codes as I expect.
@@ -22,7 +22,7 @@
  
  # Even you can specify cross compiler. Meanwhile, please set HOSTCC.
  
-@@ -40,7 +40,7 @@
+@@ -45,7 +45,7 @@
  
  
  # If you use the cross compiler, please set this host compiler.
@@ -31,7 +31,7 @@
  
  # If you need 32bit binary, define BINARY=32, otherwise define BINARY=64
  # BINARY=64
-@@ -49,7 +49,7 @@
+@@ -54,7 +54,7 @@
  # specify it.
  # For force setting for single threaded, specify USE_THREAD = 0
  # For force setting for multi  threaded, specify USE_THREAD = 1
@@ -40,14 +40,16 @@
  
  # If you're going to use this library with OpenMP, please comment it in.
  # This flag is always set for POWER8. Don't modify the flag 
-@@ -58,13 +58,13 @@
+@@ -71,7 +71,7 @@
  # You can define maximum number of threads. Basically it should be
  # less than actual number of cores. If you don't specify one, it's
  # automatically detected by the the script.
 -# NUM_THREADS = 24
 +NUM_THREADS = 2
  
- # if you don't need to install the static library, please comment it in.
+ # If you have enabled USE_OPENMP and your application would call
+ # OpenBLAS's calculation API from multi threads, please comment it in.
+@@ -84,7 +84,7 @@
  # NO_STATIC = 1
  
  # if you don't need generate the shared library, please comment it in.
@@ -56,7 +58,7 @@
  
  # If you don't need CBLAS interface, please comment it in.
  # NO_CBLAS = 1
-@@ -75,7 +75,7 @@
+@@ -98,7 +98,7 @@
  # NO_LAPACK = 1
  
  # If you don't need LAPACKE (C Interface to LAPACK), please comment it in.
@@ -65,3 +67,11 @@
  
  # Build LAPACK Deprecated functions since LAPACK 3.6.0
  BUILD_LAPACK_DEPRECATED = 1
+@@ -214,3 +214,7 @@
+ #
+ #  End of user configuration
+ #
++
++# Force cross-compilation, whose detection is buggy in the configuration linux/64->mingw/32
++# See bug https://github.com/xianyi/OpenBLAS/issues/1674
++CROSS = 1
