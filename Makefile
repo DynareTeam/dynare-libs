@@ -48,23 +48,23 @@ install:
 # OpenBLAS library
 #
 
-sources/OpenBLAS/32: v${OPENBLAS_VERSION}.tar.gz
+sources/OpenBLAS/32: openblas-${OPENBLAS_VERSION}.tar.gz
 	mkdir -p tmp-openblas-32
-	tar -zxf v${OPENBLAS_VERSION}.tar.gz --directory tmp-openblas-32
+	tar -zxf $< --directory tmp-openblas-32
 	mkdir -p sources/OpenBLAS/32
 	mv tmp-openblas-32/OpenBLAS-${OPENBLAS_VERSION}/* sources/OpenBLAS/32
 	rm -rf tmp-openblas-32
 
-sources/OpenBLAS/64: v${OPENBLAS_VERSION}.tar.gz
+sources/OpenBLAS/64: openblas-${OPENBLAS_VERSION}.tar.gz
 	mkdir -p tmp-openblas-64
-	tar -zxf v${OPENBLAS_VERSION}.tar.gz --directory tmp-openblas-64
+	tar -zxf $< --directory tmp-openblas-64
 	mkdir -p sources/OpenBLAS/64
 	mv tmp-openblas-64/OpenBLAS-${OPENBLAS_VERSION}/* sources/OpenBLAS/64
 	rm -rf tmp-openblas-64
 
-v${OPENBLAS_VERSION}.tar.gz: versions/openblas.version
-	wget http://github.com/xianyi/OpenBLAS/archive/v${OPENBLAS_VERSION}.tar.gz
-	touch v${OPENBLAS_VERSION}.tar.gz
+openblas-${OPENBLAS_VERSION}.tar.gz: versions/openblas.version
+	wget -O $@ http://github.com/xianyi/OpenBLAS/archive/v${OPENBLAS_VERSION}.tar.gz
+	touch $@
 
 build-openblas: lib32/OpenBLAS/libopenblas.a lib64/OpenBLAS/libopenblas.a
 
@@ -85,7 +85,7 @@ lib64/OpenBLAS/libopenblas.a: sources/OpenBLAS/64
 clean-openblas-src: clean-openblas-32-src clean-openblas-64-src
 
 clean-openblas-tar:
-	rm -f v${OPENBLAS_VERSION}.tar.gz
+	rm -f openblas-${OPENBLAS_VERSION}.tar.gz
 
 clean-openblas-all: clean-openblas-src clean-openblas-tar clean-libopenblas
 
