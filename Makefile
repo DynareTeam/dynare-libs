@@ -4,6 +4,7 @@ include versions/boost.version
 include versions/matio.version
 include versions/zlib.version
 include versions/octave.version
+include versions/slicot.version
 
 ROOT_PATH = $(realpath .)
 
@@ -283,46 +284,46 @@ clean-libmatio-64:
 # Slicot
 #
 
-sources/Slicot/32/without-underscore: slicot45.tar.gz
+sources/Slicot/32/without-underscore: slicot-$(SLICOT_VERSION).tar.gz
 	mkdir -p tmp-slicot-32-without-underscore
-	tar -zxf slicot45.tar.gz --directory tmp-slicot-32-without-underscore
+	tar -zxf $< --directory tmp-slicot-32-without-underscore
 	mkdir -p sources/Slicot/32/without-underscore
-	mv tmp-slicot-32-without-underscore/slicot/* sources/Slicot/32/without-underscore
+	mv tmp-slicot-32-without-underscore/slicot*/* sources/Slicot/32/without-underscore
 	rm -r tmp-slicot-32-without-underscore
 
-sources/Slicot/32/with-underscore: slicot45.tar.gz
+sources/Slicot/32/with-underscore: slicot-$(SLICOT_VERSION).tar.gz
 	mkdir -p tmp-slicot-32-with-underscore
-	tar -zxf slicot45.tar.gz --directory tmp-slicot-32-with-underscore
+	tar -zxf $< --directory tmp-slicot-32-with-underscore
 	mkdir -p sources/Slicot/32/with-underscore
-	mv tmp-slicot-32-with-underscore/slicot/* sources/Slicot/32/with-underscore
+	mv tmp-slicot-32-with-underscore/slicot*/* sources/Slicot/32/with-underscore
 	rm -r tmp-slicot-32-with-underscore
 
-sources/Slicot/64/with-32bit-integer: slicot45.tar.gz
+sources/Slicot/64/with-32bit-integer: slicot-$(SLICOT_VERSION).tar.gz
 	mkdir -p tmp-slicot-64-with-32bit-integer
-	tar -zxf slicot45.tar.gz --directory tmp-slicot-64-with-32bit-integer
+	tar -zxf $< --directory tmp-slicot-64-with-32bit-integer
 	mkdir -p sources/Slicot/64/with-32bit-integer
-	mv tmp-slicot-64-with-32bit-integer/slicot/* sources/Slicot/64/with-32bit-integer
+	mv tmp-slicot-64-with-32bit-integer/slicot*/* sources/Slicot/64/with-32bit-integer
 	rm -r tmp-slicot-64-with-32bit-integer
 
-sources/Slicot/64/with-64bit-integer: slicot45.tar.gz
+sources/Slicot/64/with-64bit-integer: slicot-$(SLICOT_VERSION).tar.gz
 	mkdir -p tmp-slicot-64-with-64bit-integer
-	tar -zxf slicot45.tar.gz --directory tmp-slicot-64-with-64bit-integer
+	tar -zxf $< --directory tmp-slicot-64-with-64bit-integer
 	mkdir -p sources/Slicot/64/with-64bit-integer
-	mv tmp-slicot-64-with-64bit-integer/slicot/* sources/Slicot/64/with-64bit-integer
+	mv tmp-slicot-64-with-64bit-integer/slicot*/* sources/Slicot/64/with-64bit-integer
 	rm -r tmp-slicot-64-with-64bit-integer
 
-sources/Slicot/64/with-32bit-integer-and-underscore: slicot45.tar.gz
+sources/Slicot/64/with-32bit-integer-and-underscore: slicot-$(SLICOT_VERSION).tar.gz
 	mkdir -p tmp-slicot-64-with-32bit-integer-and-underscore
-	tar -zxf slicot45.tar.gz --directory tmp-slicot-64-with-32bit-integer-and-underscore
+	tar -zxf $< --directory tmp-slicot-64-with-32bit-integer-and-underscore
 	mkdir -p sources/Slicot/64/with-32bit-integer-and-underscore
-	mv tmp-slicot-64-with-32bit-integer-and-underscore/slicot/* sources/Slicot/64/with-32bit-integer-and-underscore
+	mv tmp-slicot-64-with-32bit-integer-and-underscore/slicot*/* sources/Slicot/64/with-32bit-integer-and-underscore
 	rm -r tmp-slicot-64-with-32bit-integer-and-underscore
 
-sources/Slicot/64/with-64bit-integer-and-underscore: slicot45.tar.gz
+sources/Slicot/64/with-64bit-integer-and-underscore: slicot-$(SLICOT_VERSION).tar.gz
 	mkdir -p tmp-slicot-64-with-64bit-integer-and-underscore
-	tar -zxf slicot45.tar.gz --directory tmp-slicot-64-with-64bit-integer-and-underscore
+	tar -zxf $< --directory tmp-slicot-64-with-64bit-integer-and-underscore
 	mkdir -p sources/Slicot/64/with-64bit-integer-and-underscore
-	mv tmp-slicot-64-with-64bit-integer-and-underscore/slicot/* sources/Slicot/64/with-64bit-integer-and-underscore
+	mv tmp-slicot-64-with-64bit-integer-and-underscore/slicot*/* sources/Slicot/64/with-64bit-integer-and-underscore
 	rm -r tmp-slicot-64-with-64bit-integer-and-underscore
 
 sources/Slicot: sources/Slicot/32/without-underscore \
@@ -332,9 +333,9 @@ sources/Slicot: sources/Slicot/32/without-underscore \
 	sources/Slicot/64/with-32bit-integer-and-underscore \
 	sources/Slicot/64/with-64bit-integer-and-underscore
 
-slicot45.tar.gz:
-	wget --user-agent="User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0) Gecko/20100101 Firefox/10.0" -c http://slicot.org/objects/software/shared/slicot45.tar.gz
-	touch slicot45.tar.gz
+slicot-$(SLICOT_VERSION).tar.gz:
+	wget -O $@ https://deb.debian.org/debian/pool/main/s/slicot/slicot_$(SLICOT_VERSION).orig.tar.gz
+	touch $@
 
 lib32/Slicot/without-underscore/lib/libslicot_pic.a: sources/Slicot/32/without-underscore
 	patch sources/Slicot/32/without-underscore/make.inc < patch/slicot-32-without-underscore.patch
@@ -395,7 +396,7 @@ clean-slicot-src: clean-slicot-32-with-underscore-src clean-slicot-32-without-un
 clean-libslicot: clean-libslicot-32 clean-libslicot-64
 
 clean-slicot-tar:
-	rm -f slicot45.tar.gz
+	rm -f slicot-$(SLICOT_VERSION).tar.gz
 
 clean-slicot-all: clean-slicot-src clean-slicot-tar clean-libslicot
 

@@ -11,7 +11,7 @@
  NOOPT    = -u
 -LOADER   = f77
 +LOADER   = x86_64-w64-mingw32-gfortran
- LOADOPTS = $(SLICOTLIB) $(LAPACKLIB)
+ LOADOPTS = $(SLICOTLIB) $(LPKAUXLIB) $(LAPACKLIB)
  #
  #  The archiver and the flag(s) to use when building archive (library)
  #  If your system has no ranlib, set RANLIB = echo.
@@ -21,9 +21,10 @@
  ARCHFLAGS= r
  # ARCHFLAGS= cr
  # RANLIB   = ranlib
-@@ -36,4 +36,4 @@
+@@ -36,5 +36,5 @@
  #
  #BLASLIB     = -L/software/lib
  LAPACKLIB    = -L/software/lib -llapack -lblas
 -SLICOTLIB    = ../slicot.a
 +SLICOTLIB    = ../libslicot_pic.a
+ LPKAUXLIB    = ../lpkaux.a
