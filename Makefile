@@ -136,11 +136,11 @@ build-boost: lib32/Boost lib64/Boost
 
 lib32/Boost: sources/Boost/32
 	echo "using gcc : mingw : i686-w64-mingw32-g++ ;" > sources/Boost/32/user-config.jam
-	cd sources/Boost/32 && ./bootstrap.sh --with-libraries=system,filesystem --prefix=${ROOT_PATH}/lib32/Boost && ./b2 -a -q --user-config=user-config.jam toolset=gcc-mingw target-os=windows variant=release install
+	cd sources/Boost/32 && ./bootstrap.sh --with-libraries=system,filesystem --prefix=${ROOT_PATH}/lib32/Boost && ./b2 -a -q --user-config=user-config.jam toolset=gcc-mingw target-os=windows address-model=32 variant=release install
 
 lib64/Boost: sources/Boost/64
 	echo "using gcc : mingw : x86_64-w64-mingw32-g++ ;" > sources/Boost/64/user-config.jam
-	cd sources/Boost/64 && ./bootstrap.sh --with-libraries=system,filesystem --prefix=${ROOT_PATH}/lib64/Boost && ./b2 -a -q --user-config=user-config.jam toolset=gcc-mingw target-os=windows variant=release install
+	cd sources/Boost/64 && ./bootstrap.sh --with-libraries=system,filesystem --prefix=${ROOT_PATH}/lib64/Boost && ./b2 -a -q --user-config=user-config.jam toolset=gcc-mingw target-os=windows address-model=64 variant=release install
 
 clean-boost-src: clean-boost-32-src clean-boost-64-src
 
